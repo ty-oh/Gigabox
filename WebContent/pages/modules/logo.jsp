@@ -3,10 +3,8 @@
 <style type="text/css">
 	.logo_container {
 		font-family: "Noto Sans CJK KR";
-	    margin: 20px;
 	    width: 150px;
 	    height: 70px;
-	    background-color: beige;
 	}
 	.logo {
 	    width: 100%;
@@ -22,13 +20,20 @@
 	    font-size: 16px;
 	    font-weight: 700;
 	    background-color: #352461;
-	    color: white;            
+	    color: white;                       
 	    box-sizing: content-box;
+	}
+	.main-header .logo_name {
+		background-color: white;
+	    color: #352461;
 	}
 	.logo_phrase {
 	    font-size: 12px;
-	    font-weight: 700;
+	    font-weight: bold;
 	    color: #352461;
+	}
+	.main-header .logo_phrase {
+	    color: white;
 	}
 	.logo_tm {
 	    vertical-align: super;

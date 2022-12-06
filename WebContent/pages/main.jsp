@@ -25,12 +25,30 @@
 			overflow-y : scroll;
 			letter-spacing: 0;
 			line-height: 1.5;
+			color
 		}
 		body, html {
 			width:100%;
 			height:100%;
 			margin:0;
 			padding:0;
+		}
+		.button {
+			display: inline-block;
+		    height: 36px;
+		    margin: 0;
+		    padding: 0 15px;
+		    text-align: center;
+		    line-height: 34px;
+		    color: #503396;
+		    font-weight: 400;
+		    border-radius: 4px;
+		    font-family: NanumBarunGothic,Dotum,'돋움',sans-serif;
+		    text-decoration: none;
+		    border: 1px solid #503396;
+		    vertical-align: middle;
+		    background-color: #fff;
+		    cursor: pointer;
 		}
 		.body-wrapper {
 			width:100%;
@@ -69,6 +87,43 @@
 			min-width: 1100px;
 			height: 100%;
 			margin: 0 auto;
+		}
+		.main_section01 .bg:before {
+			content: '';
+		    display: block;
+		    position: absolute;
+		    left: 0;
+		    top: 0;
+		    z-index: 2;
+		    width: 100%;
+		    height: 100%;
+		    background: linear-gradient(to right, rgba(85,63,5,1) 0%, rgba(23,17,1,0) 50%, rgba(85,63,5,1) 100%);
+		}
+		.main_section01 .bg .bg-pattern {
+		    position: absolute;
+   			left: 0;
+   			top: 0;
+   			z-index: 3;
+   			width: 100%;
+   			height: 100%;
+   			background: url(/movie_images/bg-movie-detail-pattern.png) repeat 0 0;
+		}
+		.main_section01 .bg img {
+			display: block;
+			width: 100%;
+			filter: blur(15px);
+			border:0;
+		}
+		.main_section01 .bg:after {
+			content: '';
+		    display: block;
+		    position: absolute;
+		    left: 0;
+		    top: 0;
+		    right: 0;
+		    bottom: 0;
+		    z-index: 2;
+    		background-color: rgba(3,1,21,0.7);		
 		}
 		.main_section01 .cont-area {
 			overflow: hidden;
@@ -110,14 +165,64 @@
 			margin-left: 0;
 		}
 		.movie-list > ol li {
+			position: relative;
 			float: left;
 			width: 245px;
-			height: 352px;
 			margin-left: 40px;
 			padding: 0;
-			background-color: gray;
+		}
+		.movie-list > ol li p{
+			position: absolute;
+			top : 5px;
+			left : 10px;
+			font-size: 30px;
+			font-weight: bold;
+			color: white;
+		}
+		.movie-list > ol li img {
+			width: 100%;
+			border-radius: 5px;
+		}
+		.movie-list > ol li .btn-util {
+			overflow: hidden;
+			position: relative;
+			margin-top: 10px;
+			padding: 0 0 0 85px;
+			text-align: left;
+		}
+		.movie-list > ol li .btn-util .btn-like {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 80px;
+			height: 36px;
+			line-height: 34px;
+			margin: 0;
+			padding: 0 5px;
+			color: #fff;
+			font-size : 20px;
+			border-color: #555;
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+		.movie-list > ol li .btn-util div .button {
+			display: block;
+			float: left;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+			border-radius: 4px;
+			color: #fff;
+			line-height: 36px;
+			border: 0;
+			background: #037b94;
 		}
 	</style>
+	<script type="text/javascript">
+		onload = function() {
+			var header = document.getElementsByTagName('header')[0];
+			header.setAttribute('class', 'main-header');
+		}
+	</script>
 </head>
 <body>
 	<div class="body-wrapper">
@@ -125,10 +230,10 @@
 		<div class="main-container">
 			<div class="contents">
 				<div class="main-page">
-					<div class="section main_section01">
+					<div class="main_section01">
 						<div class="bg">
 							<div class="bg-pattern"></div>
-							<img alt="" src="">
+							<img alt="" src="/movie_images/${mvList.get(0).mv_image_main }">
 						</div>
 						<div class="cont-area">
 							<div class="tab-sorting">
@@ -136,26 +241,27 @@
 							</div>
 							<a href="#" class="more-movie" title="더 많은 영화보기">더 많은 영화보기 +</a>
 							<div class="movie-list">
-								<ol class="list">
+								<ol>
 									<c:choose>
 										<c:when test="${not empty mvList }">
 											<c:forEach var="i" begin="0" end="3" step="1">
 												<c:choose>
 													<c:when test="${mvList.size() gt i }">
 														<li>
-															<p>${mvList.get(i).title }</p>
-															<p>${realPath }/${mvList.get(i).mv_image_main }</p>
-															<a href="#" class="movie-info">
-																<img alt="영화 포스터" src="${realPath += '/' += mvList.get(i).mv_image_main }" />
+															<p>${i + 1 }</p>
+															<a href="Controller?cmd=movie_page&mv_idx=${mvList.get(i).mv_idx }" class="movie-info">
+																<img alt="영화 포스터" src="/movie_images/${mvList.get(i).mv_image_main }" />
 															</a>
 															<div class="btn-util">
-																<button type="button" class="button btn-like"></button>
-																<a href="#" class="button gblue">예매</a>
+																<button type="button" class="button btn-like">♡</button>
+																<div>
+																	<a href="#" class="button gblue">예매</a>																
+																</div>
 															</div>
 														</li>
 													</c:when>
 													<c:otherwise>
-														<li>xxx</li>
+														<li>최근 상영작이 없습니다.</li>
 													</c:otherwise>
 												</c:choose>
 											</c:forEach>
@@ -167,6 +273,9 @@
 								</ol>
 							</div>
 						</div>
+					</div>
+					<div class="main_section02">
+						
 					</div>
 				</div>
 			</div>

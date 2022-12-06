@@ -18,4 +18,14 @@ public class MVServiceImpl implements MVService {
 	public List<MVVO> getRecentListFour() {
 		return mvdao.getRecentListFour();
 	}
+	
+	@Override
+	public MVVO getMovieInfo(int mv_idx) {
+		return mvdao.selectMovie(mv_idx);
+	}
+	
+	@Override
+	public List<MVVO> getMovieList() {
+		return mvdao.selectMovieList();
+	}
 }

@@ -12,6 +12,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             		order by reg_date desc) a)
 		where r_num BETWEEN 1 and 4
 	</select>
+	
+	<select id="select_movie" parameterType="int" resultType="shop.gigabox.vo.MVVO">
+		select *
+		from movie
+		where mv_idx=#{mv_idx}
+	</select>
+
+	<select id="select_movie_list" resultType="shop.gigabox.vo.MVVO">
+		select *
+		from movie
+		order by mv_idx desc
+	</select>
 
 	<insert id="insert_mv" parameterType="shop.gigabox.vo.MVVO">
 		insert into movie

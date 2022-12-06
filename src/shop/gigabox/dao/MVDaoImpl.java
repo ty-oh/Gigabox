@@ -32,6 +32,16 @@ public class MVDaoImpl implements MVDao{
 	}
 	
 	@Override
+	public MVVO selectMovie(int mv_idx) {
+		return getSqlSession().selectOne("select_movie", mv_idx);
+	}
+	
+	@Override
+	public List<MVVO> selectMovieList() {
+		return getSqlSession().selectList("select_movie_list");
+	}
+	
+	@Override
 	public int insert(MVVO mvvo) {
 		int result = getSqlSession().insert("insert_mv", mvvo);
 		if(result > 0) {

@@ -19,6 +19,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	
 	<mappers>
         <mapper resource="shop/gigabox/mybatis/mapper/movie.xml"/>
+        <mapper resource="shop/gigabox/mybatis/mapper/member.xml"/>
 	</mappers>
 	
 </configuration>
