@@ -27,23 +27,26 @@
 		margin: 0 0 0 -75px;
 		padding: 0;
 	} 
-	.ci a {
+	.ci a,
+	.ci a:visited {
 		text-decoration: none;
 		outline: none;
 	}
 	header a {
 		text-decoration: none;
 		outline: none;
-		color: #fff;
 	}
 	header a:hover,
 	header a:active {
 		text-decoration: none;
-		color: #fff;
+		color: #999;
 	}
 	.main-header a,
 	.main-header a:active {
 		color: #999;
+	}
+	.main-header a:hover {
+		color: #fff;
 	}
 	header .util-area {
 		position: relative;
