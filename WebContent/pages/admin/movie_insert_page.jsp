@@ -24,7 +24,7 @@
 				return;
 			}
 			
-			f.action = '/Gigabox/MovieController';
+			f.action = '/Gigabox/AdminController';
 			f.submit();
 		}
 	</script>

@@ -1,118 +1,163 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<style type="text/css">
-		header {
-			position: absolute;
-			left: 0;
-			right: inherit;
-			width: 100%;
-			z-index: 100;
-			display: block;
-			min-width: 1100px;
-			height: 91px;
-			background-color: lightgray;
-		}
-		.ci {
-			position:absolute;
-			left: 50%;
-			top: 23px;
-			width: 150px;
-			height: 90px;
-			margin: 0 0 0 -75px;
-			padding: 0;
-		} 
-		.ci a {
-			text-decoration: none;
-		}
-		header .util-area {
-			position: relative;
-			width: 1100px;
-			margin: 0 auto;
-		}
-		header .util-area .right-link {
-			position: absolute;
-			top: 15px;
-			right: 0px;
-		}
-		header .util-area .right-link a{
-			display: block;
-			float: left;
-			vertical-align: top;
-			margin-left: 10px;
-		}
-		header .link-area {
-			position: relative;
-			width: 1100px;
-			margin: 0 auto;
-		}
-		nav {
-			height: 0;
-		}
-		nav>ul {
-			position: relative;
-			width: 1100px;
-			margin: 90px auto 0 auto;
-		}
-		nav>ul>li>a {
-			position: absolute;
-			top: -38px;
-			height: 38px;
-			display: block;
-			font-size: 20px;
-			font-weight: bold;
-		}
-		nav>ul>li:nth-child(1)>a {
-			left: 166px;
-		}
-		nav>ul>li:nth-child(2)>a {
-			left: 350px;
-		}
-		nav>ul>li:nth-child(3)>a {
-			right: 350px;
-		}
-		nav>ul>li:nth-child(4)>a {
-			right: 166px;
-		}
-	</style>
-</head>
-<body>
-	<header id="header" class="main-header">
-		<h1 class="ci">
-			<a href="/Gigabox/Controller?cmd=mainPage">
-				<jsp:include page="/pages/modules/logo-main.jsp" />	
-			</a>
-		</h1>
-		
-		<div class="util-area">
-			<div class="right-link">
-				<a href="#">로그인</a>
-				<a href="#">회원가입</a>
-			</div>
-		</div>
-		<div class="link-area" >
-		</div>
-		
-		<nav>
-			<ul>
-				<li>
-					<a>영화</a>
-				</li>
-				<li>
-					<a>예매</a>
-				</li>
-				<li>
-					<a>리뷰</a>
-				</li>
-				<li>
-					<a>내 영화</a>
-				</li>
-			</ul>
-		</nav>
-		
-	</header>
-</body>
-</html>
+<style type="text/css">
+	header {
+		position: absolute;
+		left: 0;
+		right: inherit;
+		width: 100%;
+		z-index: 100;
+		display: block;
+		min-width: 1100px;
+		height: 91px;
+		background: #fff;
+    	border-bottom: 1px solid #351f67;
+	}
+	.main-header {
+   		background-color: rgba(0,0,0,.3);
+   		border-bottom: 1px solid rgba(255,255,255,.2);
+	}
+	.ci {
+		position:absolute;
+		left: 50%;
+		top: 10px;
+		width: 150px;
+		height: 90px;
+		margin: 0 0 0 -75px;
+		padding: 0;
+	} 
+	.ci a {
+		text-decoration: none;
+		outline: none;
+	}
+	header a {
+		text-decoration: none;
+		outline: none;
+		color: #fff;
+	}
+	header a:hover,
+	header a:active {
+		text-decoration: none;
+		color: #fff;
+	}
+	.main-header a,
+	.main-header a:active {
+		color: #999;
+	}
+	header .util-area {
+		position: relative;
+		width: 1100px;
+		margin: 0 auto;
+	}
+	header .util-area .left-link {
+		position: absolute;
+		top: 15px;
+		left: 0px;
+	}
+	header .util-area .left-link a{
+		display: block;
+		float: left;
+		vertical-align: top;
+		margin-left: 10px;
+	}
+	header .util-area .right-link {
+		position: absolute;
+		top: 15px;
+		right: 0px;
+	}
+	header .util-area .right-link a,
+	header .util-area .right-link span {
+		display: block;
+		float: left;
+		vertical-align: top;
+		margin-left: 10px;
+	}
+	.main-header .util-area .right-link span {
+		color: #999;
+	}
+	header .link-area {
+		position: relative;
+		width: 1100px;
+		margin: 0 auto;
+	}
+	nav {
+		height: 0;
+	}
+	nav>ul {
+		position: relative;
+		width: 1100px;
+		margin: 90px auto 0 auto;
+	}
+	nav>ul>li>a {
+		position: absolute;
+		top: -38px;
+		height: 38px;
+		display: block;
+		font-size: 20px;
+		font-weight: bold;
+	}
+	.main-header>nav>ul>li>a {
+		color: white;
+	}
+	nav>ul>li:nth-child(1)>a {
+		left: 166px;
+	}
+	nav>ul>li:nth-child(2)>a {
+		left: 350px;
+	}
+	nav>ul>li:nth-child(3)>a {
+		right: 350px;
+	}
+	nav>ul>li:nth-child(4)>a {
+		right: 166px;
+	}
+</style>
+<header id="header" class="">
+	<h1 class="ci">
+		<a href="/Gigabox/Controller?cmd=main_page">
+			<jsp:include page="/pages/modules/logo.jsp" />	
+		</a>
+	</h1>
+	<div class="util-area">
+		<c:choose>
+			<c:when test="${not empty user }">
+				<c:if test="${user.m_isadmin eq 'admin'}">
+					<div class="left-link">
+						<a href="/Gigabox/AdminController?cmd=insert_page">영화 등록</a>
+						<a>상영관 등록</a>
+					</div>
+				</c:if>
+				<div class="right-link">
+					<span>${user.m_name }님 안녕하세요. </span>
+					<a href="/Gigabox/Controller?cmd=logout">로그아웃</a>
+					<a href="/Gigabox/Controller?cmd=member_info_page">회원정보</a>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="right-link">
+					<a href="/Gigabox/Controller?cmd=login_page">로그인</a>
+					<a href="/Gigabox/Controller?cmd=join_page">회원가입</a>
+				</div>
+			</c:otherwise>
+		</c:choose>
+	</div>
+	<div class="link-area" >
+	</div>
+	<nav>
+		<ul>
+			<li>
+				<a href="/Gigabox/Controller?cmd=movie_list">영화</a>
+			</li>
+			<li>
+				<a>예매</a>
+			</li>
+			<li>
+				<a>리뷰</a>
+			</li>
+			<li>
+				<a>내 활동</a>
+			</li>
+		</ul>
+	</nav>
+</header>

@@ -17,11 +17,11 @@ import shop.gigabox.vo.MVVO;
 /**
  * Servlet implementation class MovieController
  */
-@WebServlet("/MovieController")
-public class MovieController extends HttpServlet {
+@WebServlet("/AdminController")
+public class AdminController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public MovieController() {
+    public AdminController() {
         super();
     }
 
@@ -50,6 +50,10 @@ public class MovieController extends HttpServlet {
 		String path = "";
 		
 		switch (cmd) {
+		case "insert_page":
+			path="pages/admin/movie_insert_page.jsp";
+			break;
+		
 		case "insert":
 			mvvo = new MVVO();
 			mvvo.setTitle(mr.getParameter("title"));

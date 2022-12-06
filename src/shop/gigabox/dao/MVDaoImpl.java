@@ -1,5 +1,7 @@
 package shop.gigabox.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import shop.gigabox.mybatis.config.DBService;
@@ -22,6 +24,21 @@ public class MVDaoImpl implements MVDao{
 			sqlSession = DBService.getFactory().openSession(false);
 		}
 		return sqlSession;
+	}
+	
+	@Override
+	public List<MVVO> getRecentListFour() {
+		return getSqlSession().selectList("select_recent_four");
+	}
+	
+	@Override
+	public MVVO selectMovie(int mv_idx) {
+		return getSqlSession().selectOne("select_movie", mv_idx);
+	}
+	
+	@Override
+	public List<MVVO> selectMovieList() {
+		return getSqlSession().selectList("select_movie_list");
 	}
 	
 	@Override
