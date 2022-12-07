@@ -40,7 +40,7 @@
 		추가 이미지2 : <input type="file" name="image_2"><br/>
 		<input type="button" value="영화 등록" onclick="insert_movie(this.form)">
 		<input type="reset" value="다시 작성" />
-		<input type="hidden" name="cmd" value="insert">
+		<input type="hidden" name="cmd" value="insert_movie">
 	</form>
 </body>
 </html>

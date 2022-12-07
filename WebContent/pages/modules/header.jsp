@@ -127,8 +127,9 @@
 			<c:when test="${not empty user }">
 				<c:if test="${user.m_isadmin eq 'admin'}">
 					<div class="left-link">
-						<a href="/Gigabox/AdminController?cmd=insert_page">영화 등록</a>
-						<a>상영관 등록</a>
+						<a href="/Gigabox/AdminController?cmd=movie_insert_page">영화+</a>
+						<a href="/Gigabox/AdminController?cmd=theater_insert_page">상영관+</a>
+						<a href="/Gigabox/AdminController?cmd=schedule_insert_page">상영일정+</a>
 					</div>
 				</c:if>
 				<div class="right-link">

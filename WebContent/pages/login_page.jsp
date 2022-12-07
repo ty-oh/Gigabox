@@ -143,7 +143,7 @@
 							<div class="inner-wrapper">
 								<form method="post">
 									<input type="text" name="id" placeholder="아이디"/>
-									<input type="text" name="pw" placeholder="비밀번호"/>
+									<input type="password" name="pw" placeholder="비밀번호"/>
 									<div class="save_id">
 										<label for="save_id">아이디 저장</label>
 										<input type="checkbox" name="save_id" id="save_id" />

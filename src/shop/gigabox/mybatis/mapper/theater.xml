@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="shop.gigabox.mybatis.mapper.theater"><!-- 경로표기법이 클래스명 표기법처럼 사용 -->
+	<select id="select_theater_by_name" parameterType="String" resultType="shop.gigabox.vo.THVO">
+		select *
+		from theater
+		where th_name=#{th_name}
+	</select>
+	
+	<select id="select_theater_by_idx" parameterType="int" resultType="shop.gigabox.vo.THVO">
+		select *
+		from theater
+		where th_idx=#{th_idx}
+	</select>
+	
+	<insert id="insert_theater" parameterType="shop.gigabox.vo.THVO">
+		insert into theater
+		values( th_seq.nextval,
+				#{th_name}
+		)
+	</insert>
+</mapper>
