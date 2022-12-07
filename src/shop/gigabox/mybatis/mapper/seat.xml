@@ -4,6 +4,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="shop.gigabox.mybatis.mapper.seat"><!-- 경로표기법이 클래스명 표기법처럼 사용 -->
+	<select id="select_seat_by_th_idx" parameterType="int" resultType="shop.gigabox.vo.SEATVO">
+		select *
+		from seat
+		where th_idx=#{th_idx}
+	</select>
+	
 	<insert id="insert_seat" parameterType="shop.gigabox.vo.SEATVO">
 		insert into seat
 		values( #{th_idx},

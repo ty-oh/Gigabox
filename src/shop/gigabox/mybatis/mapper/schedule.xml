@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="shop.gigabox.mybatis.mapper.schedule"><!-- 경로표기법이 클래스명 표기법처럼 사용 -->
+	<insert id="insert_schedule" parameterType="shop.gigabox.vo.SCVO">
+		insert into schedule
+		values( sc_seq.nextval, 
+				to_date(#{screen_date}, 'YYYY-MM-DD HH24:MI'),
+				#{th_idx},
+				#{th_row},
+				#{th_col},
+				#{mv_idx}
+		)
+	</insert>
+</mapper>

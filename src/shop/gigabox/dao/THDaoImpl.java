@@ -1,5 +1,7 @@
 package shop.gigabox.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import shop.gigabox.mybatis.config.DBService;
@@ -32,6 +34,11 @@ public class THDaoImpl implements THDao {
 	@Override
 	public THVO selectTheater(int th_idx) {
 		return getSqlSession().selectOne("select_theater_by_idx", th_idx);
+	}
+	
+	@Override
+	public List<THVO> selectAllTheater() {
+		return getSqlSession().selectList("select_all_theater");
 	}
 	
 	@Override

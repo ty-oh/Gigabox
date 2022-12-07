@@ -1,5 +1,7 @@
 package shop.gigabox.service;
 
+import java.util.List;
+
 import shop.gigabox.dao.THDao;
 import shop.gigabox.dao.THDaoImpl;
 import shop.gigabox.vo.THVO;
@@ -14,6 +16,11 @@ public class THServiceImpl implements THService{
 
 	public THVO selectByIdx(int th_idx) {
 		return thdao.selectTheater(th_idx);
+	}
+	
+	@Override
+	public List<THVO> getTheaterList() {
+		return thdao.selectAllTheater();
 	}
 	
 	@Override
