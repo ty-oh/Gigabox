@@ -154,7 +154,7 @@
 				<a href="/Gigabox/Controller?cmd=movie_list">영화</a>
 			</li>
 			<li>
-				<a>예매</a>
+				<a href="/Gigabox/Controller?cmd=booking_select_movie">예매</a>
 			</li>
 			<li>
 				<a>리뷰</a>

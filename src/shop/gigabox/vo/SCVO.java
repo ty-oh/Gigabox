@@ -7,17 +7,25 @@ public class SCVO {
 	private String th_row;
 	private int th_col;
 	private int mv_idx;
+	private String isbooked;
 	
 	public SCVO() {}
-	public SCVO(int sc_idx, String screen_date, int th_idx, String th_row, int th_col, int mv_idx) {
+	public SCVO(int sc_idx, String screen_date, int th_idx, String th_row, int th_col, int mv_idx, String isbooked) {
 		this.sc_idx = sc_idx;
 		this.screen_date = screen_date;
 		this.th_idx = th_idx;
 		this.th_row = th_row;
 		this.th_col = th_col;
 		this.mv_idx = mv_idx;
+		this.isbooked = isbooked;
 	}
-	
+
+	public String getIsbooked() {
+		return isbooked;
+	}
+	public void setIsbooked(String isbooked) {
+		this.isbooked = isbooked;
+	}
 	public int getSc_idx() {
 		return sc_idx;
 	}

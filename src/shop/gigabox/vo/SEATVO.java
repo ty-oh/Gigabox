@@ -4,14 +4,22 @@ public class SEATVO {
 	private int th_idx;
 	private String th_row;
 	private int th_col;
-
+	private int price;
+	
 	public SEATVO() {}
-	public SEATVO(int th_idx, String th_row, int th_col) {
+	public SEATVO(int th_idx, String th_row, int th_col, int price) {
 		this.th_idx = th_idx;
 		this.th_row = th_row;
 		this.th_col = th_col;
+		this.price = price;
 	}
 	
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
 	public int getTh_idx() {
 		return th_idx;
 	}

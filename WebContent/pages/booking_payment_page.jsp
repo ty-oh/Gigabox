@@ -1,9 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
+	<meta charset="EUC-KR">
 	<title>Insert title here</title>
 	<style type="text/css">
 		* {
@@ -71,7 +73,7 @@
 			margin: 0 auto;
 		}
 		.form-box {
-			width: 500px;
+			width: 600px;
 			margin: 0 auto;
 			border: 1px solid #503396; 
 		}
@@ -96,7 +98,8 @@
 		}
 		.form-box .detail .inner-wrapper div input,
 		.form-box .detail .inner-wrapper div select {
-			display: inline-block;
+			margin: 0 0 5px 0;
+			display: block;
 			width: 300px;
 			height: 46px;
 			font-size: 18px;
@@ -104,40 +107,61 @@
 			border: 1px solid gray;
 			padding-left: 20px;
 		}
-		.form-box .detail .inner-wrapper div textarea {
-			color: #000;
-			resize:none;
-			width:300px;
-			height:250px;
-			padding: 5px 0 0 5px;
+		.form-box .detail .inner-wrapper div select {
+			height: 300px;
 		}
-		.form-box .detail .inner-wrapper div input[type="button"]{
+		.form-box .detail .inner-wrapper div input[type="button"] {
 			padding-left: 0px;
 		}
-		.form-box .detail .inner-wrapper div input[type="file"] {
-			border:none;
+		.form-box .detail .inner-wrapper div input[type="checkbox"] {
+			display: inline-block;
+			width: 30px;
+			height: 30px;
 		}
+		.form-box .detail .inner-wrapper div input[readonly="readonly"] {
+			background-color: #ddd;
+		}
+		.form-box .detail .inner-wrapper div .empty-seat {
+			margin: 0;
+			width: 30px;
+			height: 30px;
+			display: inline-block;
+		}
+		.form-box .detail .inner-wrapper div .booked-seat {
+			margin: 0;
+			width: 30px;
+			height: 30px;
+			display: inline-block;
+			background-color: #555;
+		}
+		.form-box .detail .inner-wrapper div table {
+			margin: 20px 0 0 0;
+		}
+		.form-box .detail .inner-wrapper div table thead tr td {
+			background-color: #aaa;
+		}
+		.form-box .detail .inner-wrapper div td {
+			text-align: center;
+		}
+		.form-box .detail .inner-wrapper div ul li {
+			display:block;
+			left-padding: 10px;
+			font-size: 20px;
+		}
+		.form-box .detail .inner-wrapper div .total-price {
+			font-size: 25px;
+			
+		}
+		.form-box .detail .inner-wrapper div .total-price span {
+			display: inline-block;
+			border-bottom: 2px solid #555;
+		}
+		
 	</style>
 	<script type="text/javascript">
-		var insert_movie = function(f) {
-			if (f.title == '') {
-				alert('제목을 입력해주세요.');
-				return;
-			}
-			if (f.title_eng == '') {
-				alert('영문 제목을 입력해주세요.');
-				return;
-			}
-			if (f.summary == '') {
-				alert('영화 요약을 입력해주세요.');
-				return;
-			}
-			if (f.main_image == '') {
-				alert('메인이미지는 반드시 첨부해주세요.');
-				return;
-			}
+		var payment = function(f) {
 			
-			f.action = '/Gigabox/AdminController';
+			f.action='/Gigabox/Controller'
 			f.submit();
 		}
 	</script>
@@ -150,32 +174,29 @@
 				<div class="inner-wrapper">
 					<div class="form-box">
 						<div class="title">
-							<span>영화 등록 하기 &lt;관리자 전용&gt;</span>
+							<span>영화 예매하기 - 5. 확인 및 결제</span>
 						</div>
 						<div class="detail">
 							<div class="inner-wrapper">
 								<form method="post">
 									<div>
-										<input type="text" name="title" placeholder="영화 제목을 입력해주세요.">
-										<span>*필수</span>
+										<input type="text" value="${mv.title }" readonly="readonly"/>
+										<input type="text" value="${th.th_name }" readonly="readonly"/>
+										<input type="text" value="${screen_date }" readonly="readonly"/>
+										<span></span>
+										<ul>
+											<li>총 ${seatList.size() }개의 좌석을 선택하셨습니다.</li>
+											<c:forEach var="seat" items="${seatList }">
+												<li>${seat.th_row }열 ${seat.th_col }행 = ${seat.price }원</li>
+											</c:forEach>
+										</ul>
+										<div class="total-price">
+											결제금액 <span>${totalPrice }원</span>
+										</div>
 									</div>
 									<div>
-										<input type="text" name="title_eng" placeholder="영어 제목을 입력해주세요.">
-										<span>*필수</span>
-									</div>
-									<div>
-										<textarea name="summary" placeholder="영화 요약을 입력해주세요."></textarea>
-										<span>*필수</span>
-									</div>
-									<div>
-										메인 이미지 : <input type="file" name="image_main"><br/>
-										추가 이미지1 : <input type="file" name="image_1"><br/>
-										추가 이미지2 : <input type="file" name="image_2"><br/>
-									</div>
-									<div>
-										<input type="button" value="영화 등록" onclick="insert_movie(this.form)">
-										<input type="reset" value="다시 작성" />
-										<input type="hidden" name="cmd" value="insert_movie">
+										<input type="hidden" name="cmd" value="booking_payment" />
+										<input type="button" value="결제하기" onclick="payment(this.form)" />
 									</div>
 								</form>
 							</div>

@@ -1,5 +1,8 @@
 package shop.gigabox.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 
 import shop.gigabox.mybatis.config.DBService;
@@ -24,6 +27,21 @@ public class SCDaoImpl implements SCDao{
 	}
 	
 	@Override
+	public List<SCVO> selectByIdxMap(Map<String, Integer> idxMap) {
+		return getSqlSession().selectList("select_schedule_by_idx_map", idxMap);
+	}
+	
+	@Override
+	public List<SCVO> selectByDateIdx(SCVO scvo) {
+		return getSqlSession().selectList("select_schedule_by_date_idx", scvo);
+	}
+	
+	@Override
+	public SCVO selectSchedule(SCVO scvo) {
+		return getSqlSession().selectOne("select_schedule", scvo);
+	}
+	
+	@Override
 	public int insertSchedule(SCVO scvo) {
 		int result = getSqlSession().insert("insert_schedule", scvo);
 		if (result > 0) {
@@ -32,4 +50,12 @@ public class SCDaoImpl implements SCDao{
 		return result;
 	}
 	
+	@Override
+	public int updateScheduleBooking(int sc_idx) {
+		int result = getSqlSession().update("update_schedule_booking", sc_idx);
+		if (result > 0) {
+			getSqlSession().commit();
+		}
+		return 0;
+	}
 }

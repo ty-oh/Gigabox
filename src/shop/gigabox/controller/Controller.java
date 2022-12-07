@@ -1,7 +1,10 @@
 package shop.gigabox.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,8 +17,18 @@ import shop.gigabox.service.MService;
 import shop.gigabox.service.MServiceImpl;
 import shop.gigabox.service.MVService;
 import shop.gigabox.service.MVServiceImpl;
+import shop.gigabox.service.SCService;
+import shop.gigabox.service.SCServiceImpl;
+import shop.gigabox.service.THService;
+import shop.gigabox.service.THServiceImpl;
+import shop.gigabox.service.TService;
+import shop.gigabox.service.TServiceImpl;
 import shop.gigabox.vo.MVO;
 import shop.gigabox.vo.MVVO;
+import shop.gigabox.vo.SCVO;
+import shop.gigabox.vo.SEATVO;
+import shop.gigabox.vo.THVO;
+import shop.gigabox.vo.TVO;
 
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
@@ -38,11 +51,29 @@ public class Controller extends HttpServlet {
 		
 		MService mservice = new MServiceImpl();
 		MVO mvo = null;
+		int m_idx;
 		
 		MVService mvservice = new MVServiceImpl();
 		List<MVVO> mvList = null;
-		int mv_idx = 0;
+		int mv_idx;
 		MVVO mvvo = null;
+		
+		THService thservice = new THServiceImpl();
+		List<THVO> thList = null;
+		int th_idx;
+		THVO thvo = null;
+		
+		SCService scservice = new SCServiceImpl();
+		List<SCVO> scList = null;
+		SCVO scvo = null;
+		
+		List<SEATVO> seatList = null;
+		SEATVO seatvo = null;
+		
+		TService tservice = new TServiceImpl();
+		TVO tvo = null;
+		
+		
 		
 		switch (cmd) {
 		case "login_page":
@@ -55,8 +86,8 @@ public class Controller extends HttpServlet {
 			
 		case "main_page":
 			mvList = mvservice.getRecentListFour();
-			request.setAttribute("mvList", mvList);
 			
+			request.setAttribute("mvList", mvList);
 			forwardCheck = true;
 			path="pages/main.jsp";
 			break;
@@ -64,10 +95,125 @@ public class Controller extends HttpServlet {
 		case "movie_page":
 			mv_idx = Integer.parseInt(request.getParameter("mv_idx"));
 			mvvo = mvservice.getMovieInfo(mv_idx);
-			request.setAttribute("mvvo", mvvo);
 			
+			request.setAttribute("mvvo", mvvo);
 			forwardCheck = true;
 			path="pages/movie_page.jsp";
+			break;
+		
+		case "booking_select_movie":
+			mvList = mvservice.getScreeningMV();
+			
+			request.setAttribute("mvList", mvList);
+			forwardCheck = true;
+			path="pages/booking_select_movie.jsp";
+			break;
+		
+		case "booking_select_theater":
+			mv_idx = Integer.parseInt(request.getParameter("mv_idx"));
+			mvvo = mvservice.getMovieInfo(mv_idx);
+			thList = thservice.getTheaterByScheduledMV(mv_idx);
+			
+			session.setAttribute("mv", mvvo);
+			request.setAttribute("thList", thList);
+			forwardCheck = true;
+			path="pages/booking_select_theater.jsp";
+			break;
+		
+		case "booking_select_date":
+			mv_idx = ((MVVO)(session.getAttribute("mv"))).getMv_idx(); 
+			th_idx = Integer.parseInt(request.getParameter("th_idx"));
+			thvo = thservice.getTheaterByIdx(th_idx);
+			Map<String, Integer> idxMap = new HashMap<>();
+			idxMap.put("mv_idx", mv_idx);
+			idxMap.put("th_idx", th_idx);
+			
+			scList = scservice.getScheduleByThMvIdx(idxMap);
+			
+			session.setAttribute("th", thvo);
+			request.setAttribute("scList", scList);
+			forwardCheck = true;
+			path="pages/booking_select_schedule.jsp";
+			break;
+		
+		case "booking_select_seat":
+			mv_idx = ((MVVO)session.getAttribute("mv")).getMv_idx(); 
+			th_idx = ((THVO)session.getAttribute("th")).getTh_idx();
+			String screen_date = request.getParameter("screen_date");
+
+			scvo = new SCVO();
+			scvo.setMv_idx(mv_idx);
+			scvo.setTh_idx(th_idx);
+			scvo.setScreen_date(screen_date);
+			scList = scservice.getScheduleByIdxDate(scvo);
+			
+			SCVO[][] seatMap = new SCVO[15][20];
+			for (SCVO seat : scList) {
+				int row = seat.getTh_row().charAt(0) - 65;
+				int col = seat.getTh_col() - 1;
+				
+				seatMap[row][col] = seat;
+			}
+			
+			request.setAttribute("seatMap", seatMap);
+			session.setAttribute("screen_date", screen_date);
+			forwardCheck = true;
+			path="pages/booking_select_seat.jsp";
+			break;
+		
+		case "booking_payment_page":
+			String[] checkedSeat = request.getParameterValues("seat");
+			
+			int totalPrice = 0;
+			seatList = new ArrayList<SEATVO>();
+			for (String seat : checkedSeat) {
+				seatvo = new SEATVO();
+				String[] rowcol = seat.split(",");
+				seatvo.setTh_row(rowcol[0]);
+				seatvo.setTh_col(Integer.parseInt(rowcol[1]));
+				seatvo.setPrice(12000);
+				totalPrice += seatvo.getPrice();
+				seatList.add(seatvo);
+			}
+			
+			session.setAttribute("totalPrice", totalPrice);
+			session.setAttribute("seatList", seatList);
+			forwardCheck = true;
+			path="pages/booking_payment_page.jsp";
+			break;
+		
+		case "booking_payment":
+			path="pages/booking_payment.jsp";
+			break;
+
+		case "confirm_booking":
+			m_idx = ((MVO)session.getAttribute("user")).getM_idx();
+			mv_idx = ((MVVO)session.getAttribute("mv")).getMv_idx();
+			th_idx = ((THVO)session.getAttribute("th")).getTh_idx();
+			screen_date = (String)session.getAttribute("screen_date");
+			seatList = (List<SEATVO>)session.getAttribute("seatList");				
+			
+			scList = new ArrayList<SCVO>();
+			for (SEATVO seat : seatList) {
+				scvo = new SCVO();
+				scvo.setMv_idx(mv_idx);
+				scvo.setTh_idx(th_idx);
+				scvo.setScreen_date(screen_date);
+				scvo.setTh_col(seat.getTh_col());
+				scvo.setTh_row(seat.getTh_row());
+				
+				scvo = scservice.selectSchedule(scvo);
+				result = scservice.bookingSchedule(scvo.getSc_idx());
+				if (result > 0) {
+					tvo = new TVO();
+					tvo.setM_idx(m_idx);
+					tvo.setSc_idx(scvo.getSc_idx());
+					
+					tservice.confirmBooking(tvo);
+				}
+			}
+			
+			path="/Gigabox/Controller?cmd=main_page";
 			break;
 			
 		case "movie_list":
@@ -127,5 +273,4 @@ public class Controller extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

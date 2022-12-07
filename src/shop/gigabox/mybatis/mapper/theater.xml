@@ -21,6 +21,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from theater
 	</select>
 	
+	<select id="select_theater_by_scheduled_mv" parameterType="int" resultType="shop.gigabox.vo.THVO">
+		select *
+		from theater
+		where th_idx=(select distinct th_idx
+        		      from schedule
+              		  where mv_idx = #{mv_idx})
+	</select>
+	
 	<insert id="insert_theater" parameterType="shop.gigabox.vo.THVO">
 		insert into theater
 		values( th_seq.nextval,

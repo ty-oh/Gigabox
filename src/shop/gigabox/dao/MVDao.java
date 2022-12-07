@@ -9,4 +9,5 @@ public interface MVDao {
 	public List<MVVO> getRecentListFour();
 	public MVVO selectMovie(int mv_idx);
 	public List<MVVO> selectMovieList();
+	public List<MVVO> selectMovieListInSchedule();
 }
