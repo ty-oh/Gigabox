@@ -1,6 +1,7 @@
 package shop.gigabox.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +13,13 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import shop.gigabox.service.MVService;
 import shop.gigabox.service.MVServiceImpl;
+import shop.gigabox.service.SeatService;
+import shop.gigabox.service.SeatServiceImpl;
+import shop.gigabox.service.THService;
+import shop.gigabox.service.THServiceImpl;
 import shop.gigabox.vo.MVVO;
+import shop.gigabox.vo.SEATVO;
+import shop.gigabox.vo.THVO;
 
 /**
  * Servlet implementation class MovieController
@@ -33,8 +40,16 @@ public class AdminController extends HttpServlet {
 		
 		MultipartRequest mr = null;
 		String cmd = request.getParameter("cmd");
+		int result;
 		MVVO mvvo = null;
 		MVService mvservice = new MVServiceImpl();
+		
+		THVO thvo = null;
+		THService thservice = new THServiceImpl();
+		
+		SEATVO seatvo = null;
+		SeatService seatservice = new SeatServiceImpl();
+		
 		
 		if (cmd == null) {
 			mr = new MultipartRequest(
@@ -50,11 +65,17 @@ public class AdminController extends HttpServlet {
 		String path = "";
 		
 		switch (cmd) {
-		case "insert_page":
+		case "movie_insert_page":
 			path="pages/admin/movie_insert_page.jsp";
 			break;
+		case "theater_insert_page":
+			path="pages/admin/theater_insert_page.jsp";
+			break;
+		case "schedule_insert_page":
+			path="pages/admin/schedule_insert_page.jsp";
+			break;
 		
-		case "insert":
+		case "insert_movie":
 			mvvo = new MVVO();
 			mvvo.setTitle(mr.getParameter("title"));
 			mvvo.setTitle_eng(mr.getParameter("title_eng"));
@@ -80,6 +101,30 @@ public class AdminController extends HttpServlet {
 			
 			mvservice.insert(mvvo);
 			path = "pages/main.jsp";
+			break;
+			
+		case "insert_theater":
+			String th_name= request.getParameter("th_name"); 
+			String[] seat = request.getParameterValues("seat");
+			
+			thvo = new THVO();
+			thvo.setTh_name(th_name);
+			
+			result = thservice.insert(thvo);
+			if (result > 0) {
+				thvo = thservice.selectByName(th_name);
+			}
+			
+			seatvo = new SEATVO();
+			for (String s : seat) {
+				String[] rowcol = s.split(",");
+				seatvo.setTh_idx(thvo.getTh_idx());
+				seatvo.setTh_row(rowcol[0]);
+				seatvo.setTh_col(rowcol[1]);
+				seatservice.insert(seatvo);
+			}
+			
+			path = "pages/admin/theater_insert_done.jsp";
 			break;
 		}
 		

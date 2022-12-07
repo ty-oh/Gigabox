@@ -27,23 +27,26 @@
 		margin: 0 0 0 -75px;
 		padding: 0;
 	} 
-	.ci a {
+	.ci a,
+	.ci a:visited {
 		text-decoration: none;
 		outline: none;
 	}
 	header a {
 		text-decoration: none;
 		outline: none;
-		color: #fff;
 	}
 	header a:hover,
 	header a:active {
 		text-decoration: none;
-		color: #fff;
+		color: #999;
 	}
 	.main-header a,
 	.main-header a:active {
 		color: #999;
+	}
+	.main-header a:hover {
+		color: #fff;
 	}
 	header .util-area {
 		position: relative;
@@ -124,8 +127,9 @@
 			<c:when test="${not empty user }">
 				<c:if test="${user.m_isadmin eq 'admin'}">
 					<div class="left-link">
-						<a href="/Gigabox/AdminController?cmd=insert_page">영화 등록</a>
-						<a>상영관 등록</a>
+						<a href="/Gigabox/AdminController?cmd=movie_insert_page">영화+</a>
+						<a href="/Gigabox/AdminController?cmd=theater_insert_page">상영관+</a>
+						<a href="/Gigabox/AdminController?cmd=schedule_insert_page">상영일정+</a>
 					</div>
 				</c:if>
 				<div class="right-link">
