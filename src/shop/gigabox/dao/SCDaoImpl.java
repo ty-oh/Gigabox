@@ -42,6 +42,11 @@ public class SCDaoImpl implements SCDao{
 	}
 	
 	@Override
+	public SCVO selectScheduleByIdx(int sc_idx) {
+		return getSqlSession().selectOne("select_schedule_by_idx", sc_idx);
+	}
+	
+	@Override
 	public int insertSchedule(SCVO scvo) {
 		int result = getSqlSession().insert("insert_schedule", scvo);
 		if (result > 0) {

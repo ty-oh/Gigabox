@@ -72,8 +72,7 @@ public class Controller extends HttpServlet {
 		
 		TService tservice = new TServiceImpl();
 		TVO tvo = null;
-		
-		
+		List<TVO> tList = null;
 		
 		switch (cmd) {
 		case "login_page":
@@ -222,6 +221,31 @@ public class Controller extends HttpServlet {
 			
 			forwardCheck = true;
 			path="pages/movie_list.jsp";
+			break;
+		
+		case "my_ticket_page":
+			m_idx = ((MVO)session.getAttribute("user")).getM_idx();
+			
+			tList = tservice.getTicketListByIdx(m_idx);
+			scList = new ArrayList<SCVO>();
+			mvList = new ArrayList<MVVO>();
+			thList = new ArrayList<THVO>();
+			for (TVO t : tList) {
+				scvo = scservice.getSchedultByIdx(t.getSc_idx());
+				mvvo = mvservice.getMovieInfo(scvo.getMv_idx());
+				thvo = thservice.getTheaterByIdx(scvo.getTh_idx());
+				
+				scList.add(scvo);
+				mvList.add(mvvo);
+				thList.add(thvo);
+			}
+			
+			session.setAttribute("scList", scList);
+			session.setAttribute("mvList", mvList);
+			session.setAttribute("thList", thList);
+			
+			forwardCheck = true;
+			path="pages/my_ticket.jsp";
 			break;
 			
 		case "login":

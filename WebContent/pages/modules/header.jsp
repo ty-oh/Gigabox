@@ -157,10 +157,10 @@
 				<a href="/Gigabox/Controller?cmd=booking_select_movie">예매</a>
 			</li>
 			<li>
-				<a>리뷰</a>
+				<a href="/Gigabox/Controller?cmd=review_main_page">리뷰</a>
 			</li>
 			<li>
-				<a>내 티켓</a>
+				<a href="/Gigabox/Controller?cmd=my_ticket_page">내 티켓</a>
 			</li>
 		</ul>
 	</nav>
