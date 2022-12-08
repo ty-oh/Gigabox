@@ -1,5 +1,7 @@
 package shop.gigabox.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import shop.gigabox.mybatis.config.DBService;
@@ -21,6 +23,11 @@ public class SeatDaoImpl implements SeatDao{
 			sqlSession = DBService.getFactory().openSession(false);
 		}
 		return sqlSession;
+	}
+	
+	@Override
+	public List<SEATVO> selectSeatList(int th_idx) {
+		return getSqlSession().selectList("select_seat_by_th_idx", th_idx);
 	}
 	
 	@Override

@@ -9,5 +9,5 @@ public interface MVService {
 	public List<MVVO> getRecentListFour();
 	public MVVO getMovieInfo(int mv_idx);
 	public List<MVVO> getMovieList();
-	
+	public List<MVVO> getScreeningMV();
 }

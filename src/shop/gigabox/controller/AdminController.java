@@ -1,6 +1,8 @@
 package shop.gigabox.controller;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,13 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
+import oracle.sql.DATE;
 import shop.gigabox.service.MVService;
 import shop.gigabox.service.MVServiceImpl;
+import shop.gigabox.service.SCService;
+import shop.gigabox.service.SCServiceImpl;
 import shop.gigabox.service.SeatService;
 import shop.gigabox.service.SeatServiceImpl;
 import shop.gigabox.service.THService;
 import shop.gigabox.service.THServiceImpl;
 import shop.gigabox.vo.MVVO;
+import shop.gigabox.vo.SCVO;
 import shop.gigabox.vo.SEATVO;
 import shop.gigabox.vo.THVO;
 
@@ -50,6 +56,8 @@ public class AdminController extends HttpServlet {
 		SEATVO seatvo = null;
 		SeatService seatservice = new SeatServiceImpl();
 		
+		SCVO scvo = null;
+		SCService scservice = new SCServiceImpl();
 		
 		if (cmd == null) {
 			mr = new MultipartRequest(
@@ -68,10 +76,19 @@ public class AdminController extends HttpServlet {
 		case "movie_insert_page":
 			path="pages/admin/movie_insert_page.jsp";
 			break;
+			
 		case "theater_insert_page":
 			path="pages/admin/theater_insert_page.jsp";
 			break;
+			
 		case "schedule_insert_page":
+			List<MVVO> mvList = mvservice.getMovieList();
+			request.setAttribute("mvList", mvList);
+			
+			List<THVO> thList = thservice.getTheaterList();
+			request.setAttribute("thList", thList);
+			
+			forwardCheck = true;
 			path="pages/admin/schedule_insert_page.jsp";
 			break;
 		
@@ -120,11 +137,30 @@ public class AdminController extends HttpServlet {
 				String[] rowcol = s.split(",");
 				seatvo.setTh_idx(thvo.getTh_idx());
 				seatvo.setTh_row(rowcol[0]);
-				seatvo.setTh_col(rowcol[1]);
+				seatvo.setTh_col(Integer.parseInt(rowcol[1]));
 				seatservice.insert(seatvo);
 			}
 			
 			path = "pages/admin/theater_insert_done.jsp";
+			break;
+			
+		case "insert_schedule":
+			scvo = new SCVO();
+			scvo.setScreen_date(request.getParameter("sc_date") + " " + request.getParameter("sc_time"));
+			scvo.setMv_idx(Integer.parseInt(request.getParameter("mv_idx")));
+			scvo.setTh_idx(Integer.parseInt(request.getParameter("th_idx")));
+			
+			List<SEATVO> seatList = seatservice.getSeatList(scvo.getTh_idx());
+			System.out.println(seatList.size());
+			for (SEATVO s : seatList) {
+				System.out.println(s.getTh_col());
+				System.out.println(s.getTh_row());
+				scvo.setTh_col(s.getTh_col());
+				scvo.setTh_row(s.getTh_row());
+				scservice.insertSchedule(scvo);
+			}
+			
+			path = "/Gigabox/AdminController?cmd=schedule_insert_page";
 			break;
 		}
 		

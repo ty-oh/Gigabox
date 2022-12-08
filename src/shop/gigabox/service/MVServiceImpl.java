@@ -20,6 +20,11 @@ public class MVServiceImpl implements MVService {
 	}
 	
 	@Override
+	public List<MVVO> getScreeningMV() {
+		return mvdao.selectMovieListInSchedule();
+	}
+	
+	@Override
 	public MVVO getMovieInfo(int mv_idx) {
 		return mvdao.selectMovie(mv_idx);
 	}

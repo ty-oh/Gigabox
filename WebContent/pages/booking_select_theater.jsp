@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
+	<meta charset="EUC-KR">
 	<title>Insert title here</title>
 	<style type="text/css">
 		* {
@@ -104,40 +105,21 @@
 			border: 1px solid gray;
 			padding-left: 20px;
 		}
-		.form-box .detail .inner-wrapper div textarea {
-			color: #000;
-			resize:none;
-			width:300px;
-			height:250px;
-			padding: 5px 0 0 5px;
+		.form-box .detail .inner-wrapper div select {
+			height: 300px;
 		}
 		.form-box .detail .inner-wrapper div input[type="button"]{
 			padding-left: 0px;
 		}
-		.form-box .detail .inner-wrapper div input[type="file"] {
-			border:none;
-		}
 	</style>
 	<script type="text/javascript">
-		var insert_movie = function(f) {
-			if (f.title == '') {
-				alert('제목을 입력해주세요.');
-				return;
-			}
-			if (f.title_eng == '') {
-				alert('영문 제목을 입력해주세요.');
-				return;
-			}
-			if (f.summary == '') {
-				alert('영화 요약을 입력해주세요.');
-				return;
-			}
-			if (f.main_image == '') {
-				alert('메인이미지는 반드시 첨부해주세요.');
+		var choose_theater = function(f) {
+			if (f.th_idx.value == '') {
+				alert('예매하실 상영관를 선택해주세요.');
 				return;
 			}
 			
-			f.action = '/Gigabox/AdminController';
+			f.action='/Gigabox/Controller'
 			f.submit();
 		}
 	</script>
@@ -150,32 +132,23 @@
 				<div class="inner-wrapper">
 					<div class="form-box">
 						<div class="title">
-							<span>영화 등록 하기 &lt;관리자 전용&gt;</span>
+							<span>영화 예매하기 - 2. 상영관 선택</span>
 						</div>
 						<div class="detail">
 							<div class="inner-wrapper">
 								<form method="post">
 									<div>
-										<input type="text" name="title" placeholder="영화 제목을 입력해주세요.">
-										<span>*필수</span>
+										<input type="text" value="${mv.title }" readonly="readonly"/>
+										<select name="th_idx" size="10">
+											<option value="0">:: 상영 중인 상영관 ::</option>
+											<c:forEach var="th" items="${thList }">
+												<option value="${th.th_idx }">${th.th_name }</option>
+											</c:forEach>
+										</select>
 									</div>
 									<div>
-										<input type="text" name="title_eng" placeholder="영어 제목을 입력해주세요.">
-										<span>*필수</span>
-									</div>
-									<div>
-										<textarea name="summary" placeholder="영화 요약을 입력해주세요."></textarea>
-										<span>*필수</span>
-									</div>
-									<div>
-										메인 이미지 : <input type="file" name="image_main"><br/>
-										추가 이미지1 : <input type="file" name="image_1"><br/>
-										추가 이미지2 : <input type="file" name="image_2"><br/>
-									</div>
-									<div>
-										<input type="button" value="영화 등록" onclick="insert_movie(this.form)">
-										<input type="reset" value="다시 작성" />
-										<input type="hidden" name="cmd" value="insert_movie">
+										<input type="hidden" name="cmd" value="booking_select_date" />
+										<input type="button" value="영화 선택" onclick="choose_theater(this.form)" />
 									</div>
 								</form>
 							</div>
