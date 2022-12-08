@@ -111,9 +111,19 @@
 		.inner-wrapper .ticket-list ol>li .ticket-info .detail .btn-util div{
 			display: inline-block;
 		}
-		
+		.inner-wrapper .ticket-list ol>li .is-empty {
+			height: 100%;
+			padding-top: 10%;
+			text-align: center;
+		}
 	</style>
 	<script type="text/javascript">
+		var cancel_ticket = function(sc_idx) {
+			if(confirm('티켓을 취소하시겠습니까?')){
+				location.href="/Gigabox/Controller?cmd=cancel_ticket&sc_idx="+sc_idx;
+			}
+		}
+	
 		if (${empty user.m_idx}) {
 			alert('티켓을 확인하려면 로그인하세요.');
 			location.href = '/Gigabox/Controller?cmd=login_page';
@@ -147,10 +157,10 @@
 													<p>좌석 : ${sc.th_row }행 ${sc.th_col }열</p>
 													<div class="btn-util">
 														<div class="review-btn">
-															<a href="#" class="button purple">리뷰</a>
+															<a href="/Gigabox/Controller?cmd=review_insert_page&mv_idx=${mv.mv_idx }" class="button purple">리뷰</a>
 														</div>
 														<div class="cancle-btn">
-															<a href="#" class="button purple">취소</a>
+															<a href="#" class="button purple" onclick="cancel_ticket(${sc.sc_idx})">취소</a>
 														</div>
 													</div>											
 												</div>
@@ -159,7 +169,7 @@
 									</c:forEach>
 								</c:when>
 								<c:otherwise>
-									<li><h1>예매한 티켓이 없습니다.</h1></li>
+									<li><h1 class="is-empty">예매한 티켓이 없습니다.</h1></li>
 								</c:otherwise>
 							</c:choose>
 						</ol>

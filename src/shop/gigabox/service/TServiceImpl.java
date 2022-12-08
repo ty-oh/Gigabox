@@ -18,4 +18,9 @@ public class TServiceImpl implements TService {
 	public int confirmBooking(TVO tvo) {
 		return tdao.insertTicket(tvo);
 	}
+	
+	@Override
+	public int cancelTicket(int sc_idx) {
+		return tdao.deleteTicket(sc_idx);
+	}
 }

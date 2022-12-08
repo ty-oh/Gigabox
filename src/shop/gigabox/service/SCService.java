@@ -12,4 +12,5 @@ public interface SCService {
 	public SCVO getSchedultByIdx(int sc_idx);
 	public int bookingSchedule(int sc_idx);
 	public int insertSchedule(SCVO scvo);
+	public int cancelBooking(int sc_idx);
 }

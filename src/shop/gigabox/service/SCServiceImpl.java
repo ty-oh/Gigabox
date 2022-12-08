@@ -39,4 +39,9 @@ public class SCServiceImpl implements SCService {
 	public int insertSchedule(SCVO scvo) {
 		return scdao.insertSchedule(scvo);
 	}
+	
+	@Override
+	public int cancelBooking(int sc_idx) {
+		return scdao.updateScheduleUnbooking(sc_idx);
+	}
 }

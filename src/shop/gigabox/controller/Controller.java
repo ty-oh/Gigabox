@@ -65,6 +65,7 @@ public class Controller extends HttpServlet {
 		
 		SCService scservice = new SCServiceImpl();
 		List<SCVO> scList = null;
+		int sc_idx;
 		SCVO scvo = null;
 		
 		List<SEATVO> seatList = null;
@@ -202,17 +203,27 @@ public class Controller extends HttpServlet {
 				scvo.setTh_row(seat.getTh_row());
 				
 				scvo = scservice.selectSchedule(scvo);
+				System.out.println(scvo.getSc_idx());
 				result = scservice.bookingSchedule(scvo.getSc_idx());
+				
 				if (result > 0) {
 					tvo = new TVO();
 					tvo.setM_idx(m_idx);
 					tvo.setSc_idx(scvo.getSc_idx());
-					
 					tservice.confirmBooking(tvo);
 				}
 			}
 			
-			path="/Gigabox/Controller?cmd=main_page";
+			path="/Gigabox/Controller?cmd=my_ticket_page";
+			break;
+		
+		case "cancel_ticket":
+			sc_idx = Integer.parseInt(request.getParameter("sc_idx"));
+			
+			tservice.cancelTicket(sc_idx);
+			scservice.cancelBooking(sc_idx);
+			
+			path="/Gigabox/Controller?cmd=my_ticket_page";
 			break;
 			
 		case "movie_list":
