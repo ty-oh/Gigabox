@@ -1,5 +1,7 @@
 package shop.gigabox.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import shop.gigabox.mybatis.config.DBService;
@@ -16,11 +18,16 @@ public class TDaoImpl implements TDao {
 	}
 	
 	private static SqlSession sqlSession = null;
-	public synchronized static SqlSession getSqlSession() {
+	private synchronized static SqlSession getSqlSession() {
 		if (sqlSession == null) {
-			DBService.getFactory().openSession(false);
+			sqlSession = DBService.getFactory().openSession(false);
 		}
 		return sqlSession;
+	}
+	
+	@Override
+	public List<TVO> selectTicketByIdx(int m_idx) {
+		return getSqlSession().selectList("select_ticket_by_idx", m_idx);
 	}
 	
 	@Override

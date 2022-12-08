@@ -28,6 +28,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  screen_date=to_date(#{screen_date}, 'YYYY-MM-DD HH24:MI:SS')
 	</select>
 	
+	<select id="select_schedule_by_idx" parameterType="int" resultType="shop.gigabox.vo.SCVO">
+		select *
+		from schedule
+		where sc_idx=#{sc_idx} and
+			  sysdate &lt; screen_date
+		order by screen_date desc
+	</select>
+	
 	<insert id="insert_schedule" parameterType="shop.gigabox.vo.SCVO">
 		insert into schedule
 		values( sc_seq.nextval, 

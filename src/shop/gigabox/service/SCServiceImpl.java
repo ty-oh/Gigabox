@@ -26,6 +26,11 @@ public class SCServiceImpl implements SCService {
 	}
 	
 	@Override
+	public SCVO getSchedultByIdx(int sc_idx) {
+		return scdao.selectScheduleByIdx(sc_idx);
+	}
+	
+	@Override
 	public int bookingSchedule(int sc_idx) {
 		return scdao.updateScheduleBooking(sc_idx);
 	}
