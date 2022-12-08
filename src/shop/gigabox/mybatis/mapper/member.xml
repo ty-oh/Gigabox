@@ -9,6 +9,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from member
 		where m_id=#{m_id} and m_pw=#{m_pw}
 	</select>
+	
+	<select id="select_member_by_idx" parameterType="int" resultType="shop.gigabox.vo.MVO">
+		select *
+		from member
+		where m_idx=#{m_idx}
+	</select>
+	
 	<insert id="insert_member" parameterType="shop.gigabox.vo.MVO">
 		insert into member 
 		values (m_seq.nextval,

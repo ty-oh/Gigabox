@@ -24,6 +24,16 @@ public class MDaoImpl implements MDao{
 	}
 	
 	@Override
+	public MVO selectMember(MVO mvo) {
+		return getSqlSession().selectOne("select_member", mvo);
+	}
+	
+	@Override
+	public MVO selectMemberByIdx(int m_idx) {
+		return getSqlSession().selectOne("select_member_by_idx", m_idx);
+	}
+	
+	@Override
 	public int insertMember(MVO mvo) {
 		int result = getSqlSession().insert("insert_member", mvo);
 		if (result > 0) {
@@ -32,8 +42,4 @@ public class MDaoImpl implements MDao{
 		return result;
 	}
 	
-	@Override
-	public MVO selectMember(MVO mvo) {
-		return getSqlSession().selectOne("select_member", mvo);
-	}
 }

@@ -13,6 +13,11 @@ public class MServiceImpl implements MService {
 	}
 	
 	@Override
+	public MVO getMemberByIdx(int m_idx) {
+		return mdao.selectMemberByIdx(m_idx);
+	}
+	
+	@Override
 	public int joinMember(MVO mvo) {
 		return mdao.insertMember(mvo);
 	}

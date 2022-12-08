@@ -17,6 +17,8 @@ import shop.gigabox.service.MService;
 import shop.gigabox.service.MServiceImpl;
 import shop.gigabox.service.MVService;
 import shop.gigabox.service.MVServiceImpl;
+import shop.gigabox.service.RService;
+import shop.gigabox.service.RServiceImpl;
 import shop.gigabox.service.SCService;
 import shop.gigabox.service.SCServiceImpl;
 import shop.gigabox.service.THService;
@@ -25,6 +27,7 @@ import shop.gigabox.service.TService;
 import shop.gigabox.service.TServiceImpl;
 import shop.gigabox.vo.MVO;
 import shop.gigabox.vo.MVVO;
+import shop.gigabox.vo.RVO;
 import shop.gigabox.vo.SCVO;
 import shop.gigabox.vo.SEATVO;
 import shop.gigabox.vo.THVO;
@@ -50,6 +53,7 @@ public class Controller extends HttpServlet {
 		int result = 0;
 		
 		MService mservice = new MServiceImpl();
+		List<MVO> mList = null;
 		MVO mvo = null;
 		int m_idx;
 		
@@ -75,6 +79,10 @@ public class Controller extends HttpServlet {
 		TVO tvo = null;
 		List<TVO> tList = null;
 		
+		RService rservice = new RServiceImpl();
+		List<RVO> rList = null;
+		RVO rvo = null;
+		
 		switch (cmd) {
 		case "login_page":
 			path="pages/login_page.jsp";
@@ -95,7 +103,18 @@ public class Controller extends HttpServlet {
 		case "movie_page":
 			mv_idx = Integer.parseInt(request.getParameter("mv_idx"));
 			mvvo = mvservice.getMovieInfo(mv_idx);
+			int rScoreAvg = rservice.getReviewScoreAvg(mv_idx);
 			
+			rList = rservice.getReviewListByMovie(mv_idx);
+			mList = new ArrayList<MVO>();
+			for (RVO r : rList) {
+				mvo = mservice.getMemberByIdx(r.getM_idx());
+				mList.add(mvo);
+			}
+			
+			request.setAttribute("mList", mList);
+			request.setAttribute("rList", rList);
+			request.setAttribute("rScoreAvg", rScoreAvg);
 			request.setAttribute("mvvo", mvvo);
 			forwardCheck = true;
 			path="pages/movie_page.jsp";

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -113,7 +114,7 @@
 		    min-width: 100px;
 		    height: 36px;
 		    line-height: 34px;
-		    margin: 0 6px 0 0;
+		    margin: 0 6px 20px 0;
 		    padding: 0 10px;
 		    font-size: .9333em;
 		    color: #fff;
@@ -122,6 +123,30 @@
 		    border: 1px solid #706f72;
 		    border-radius: 4px;
 		    background-color: transparent;
+		}
+		.contents .movie-detail .info {
+			width: 800px;
+		}
+		.contents .movie-detail .info .summary {
+			margin: 0 0 20px 0;
+		}
+		.contents .movie-detail .info .r-score {
+		
+		}
+		.contents .movie-detail .info .r-score p,
+		.contents .movie-detail .info .r-score span {
+			display: inline-block;
+			vertical-align: bottom;
+		}
+		.contents .movie-detail .info .r-score p {
+			font-size: 30px;
+			font-weight: bold;
+			color: #adf;
+		}
+		.contents .movie-detail .info .r-score span {
+			font-size: 20px;
+			font-weight: bold;
+			color: #adf;
 		}
 		.contents .movie-detail .poster {
 			overflow: hidden;
@@ -175,16 +200,70 @@
 			width: 1100px;
 			margin: 0 auto;
 		}
-		.inner-wrapper .summary-title {
-			margin: 0 0 20px 0;
+		.inner-wrapper .contents-title{
+			width: 100%;
+			height: 80px;
+			position: relative;
 		}
-		.inner-wrapper .summary {
-			margin: 0 0 20px 0;
+		.inner-wrapper .contents-title h1{
+			position:absolute;
+			top: 20px;
+			left: 30px;
+			padding-left: 15%;
+			font-size: 25px;
 		}
-		.inner-wrapper .etc-info {
-			margin: 0 0 20px 0;
+		.inner-wrapper .review-list ol>li {
+			overflow: hidden;
+			position: relative;
+			width: 60%;
+			height: 75px;
+			margin: 5px auto;
+			border: 1px solid #777;
+			border-radius: 5px;
+		}
+		.inner-wrapper .review-list ol>li .review-info .user-name {
+			position:absolute;
+			top: 10px;
+			left:10px;
+			font-size: 18px;
+			font-weight: bold;
+		}
+		.inner-wrapper .review-list ol>li .review-info .detail {
+			position:absolute;
+			left: 120px;
+		}
+		.inner-wrapper .review-list ol>li .review-info .detail p {
+			font-size: 18px; 
+			margin: 3px;
+		}
+		.inner-wrapper .review-list ol>li .review-info .btn-util {
+			position:absolute;
+			right: 10px;
+			bottom: 10px;
+		}
+		.inner-wrapper .review-list ol>li .review-info .btn-util div{
+			display: inline-block;
+		}
+		.inner-wrapper .review-list ol>li .is-empty {
+			height: 100%;
+			padding-top: 10%;
+			text-align: center;
 		}
 	</style>
+	<script type="text/javascript">
+		var booking = function(mv_idx) {
+			if (${empty user.m_idx}) {
+				alert('로그인이 필요한 서비스입니다.');
+				location.href = '/Gigabox/Controller?cmd=login_page';
+				return;
+			}
+			
+			location.href = '/Gigabox/Controller?cmd=booking_select_theater&mv_idx='+mv_idx;
+		}
+		var delete_review = function(r_idx) {
+			
+		}
+	</script>
 </head>
 <body>
 	<div class="body-wrapper">
@@ -198,29 +277,67 @@
 						<div class="btn-util">
 							<button class="button btn-like">♡</button>
 						</div>
-						<div class="info"></div>
+						<div class="info">
+							<div class="summary">
+								${mvvo.summary }
+							</div>
+							<div class="etc-info">
+								<span>등록일 : ${mvvo.reg_date }</span>
+							</div>
+							<div class="r-score">
+								<span>평점</span>
+								<p>${rScoreAvg } / 5</p> 
+							</div>
+						</div>
 						<div class="poster">
 							<div class="wrap">
 								<img alt="" src="/movie_images/${mvvo.mv_image_main }">
 							</div>
 						</div>
 						<div class="reserve">
-							<a>예매</a>
+							<a href="#" onclick="booking(${mvvo.mv_idx})">예매</a>
 						</div>
 					</div>
 				</div>
 				<div class="inner-wrapper">
-					<div class="summary-wrapper">
-						<h2 class="summary-title">줄거리 요약</h2>
-						<div class="summary">
-							${mvvo.summary }
-						</div>
-						<div class="etc-info">
-							<span>등록일 : ${mvvo.reg_date }</span>
-						</div>
+					<div class="contents-title">
+						<h1>영화 ${mvvo.title } 실관람 리뷰</h1>
 					</div>
-					<div class="">
-						
+					<div class="review-list">
+						<ol>
+							<c:choose>
+								<c:when test="${not empty rList }">
+									<c:forEach var="i" begin="0" end="${rList.size() - 1}" step="1">
+										<c:set var="m" value="${mList.get(i) }"/>
+										<c:set var="r" value="${rList.get(i) }"/>
+										<li>
+											<div class="review-info">
+												<div class="user-name">${m.m_name }</div>
+												<div class="detail">
+													<p>한줄평 : ${r.r_content }</p>
+													<p class="stars">평점 : <c:forEach var="i" begin="1" end="${r.r_score }" step="1">
+														★
+													</c:forEach></p>
+												</div>
+												<c:if test="${m.m_idx eq user.m_idx }">
+													<div class="btn-util">
+														<div class="update-btn">
+															<a href="/Gigabox/ReviewController?cmd=review_update_page&r_idx=${r.r_idx }" class="button purple">수정</a>
+														</div>
+														<div class="delete-btn">
+															<a href="#" class="button purple" onclick="delete_review(${r.r_idx})">삭제</a>
+														</div>
+													</div>											
+												</c:if>
+											</div>
+										</li>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<li><h1 class="is-empty">작성한 리뷰가 없습니다.</h1></li>
+								</c:otherwise>
+							</c:choose>
+						</ol>
 					</div>
 				</div>
 			</div>
