@@ -118,15 +118,15 @@
 		}
 	</style>
 	<script type="text/javascript">
+		if (${empty user.m_idx}) {
+			alert('티켓을 확인하려면 로그인하세요.');
+			location.href = '/Gigabox/Controller?cmd=login_page';
+		}
+		
 		var cancel_ticket = function(sc_idx) {
 			if(confirm('티켓을 취소하시겠습니까?')){
 				location.href="/Gigabox/Controller?cmd=cancel_ticket&sc_idx="+sc_idx;
 			}
-		}
-	
-		if (${empty user.m_idx}) {
-			alert('티켓을 확인하려면 로그인하세요.');
-			location.href = '/Gigabox/Controller?cmd=login_page';
 		}
 	</script>
 </head>
@@ -157,7 +157,7 @@
 													<p>좌석 : ${sc.th_row }행 ${sc.th_col }열</p>
 													<div class="btn-util">
 														<div class="review-btn">
-															<a href="/Gigabox/Controller?cmd=review_insert_page&mv_idx=${mv.mv_idx }" class="button purple">리뷰</a>
+															<a href="/Gigabox/ReviewController?cmd=review_insert_page&mv_idx=${mv.mv_idx }" class="button purple">리뷰</a>
 														</div>
 														<div class="cancle-btn">
 															<a href="#" class="button purple" onclick="cancel_ticket(${sc.sc_idx})">취소</a>

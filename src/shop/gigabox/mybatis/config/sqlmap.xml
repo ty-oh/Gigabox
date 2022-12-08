@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <mapper resource="shop/gigabox/mybatis/mapper/seat.xml"/>
         <mapper resource="shop/gigabox/mybatis/mapper/schedule.xml"/>
         <mapper resource="shop/gigabox/mybatis/mapper/ticket.xml"/>
+        <mapper resource="shop/gigabox/mybatis/mapper/review.xml"/>
 	</mappers>
 	
 </configuration>
