@@ -116,6 +116,17 @@
 		right: 166px;
 	}
 </style>
+<script type="text/javascript">
+	var nav_page_move = function(cmd) {
+		if (${empty user.m_idx}) {
+			alert('로그인이 필요합니다.');
+			location.href = '/Gigabox/Controller?cmd=login_page';
+			return;
+		}
+		
+		location.href = '/Gigabox/'+cmd;
+	}
+</script>
 <header id="header" class="">
 	<h1 class="ci">
 		<a href="/Gigabox/Controller?cmd=main_page">
@@ -154,13 +165,13 @@
 				<a href="/Gigabox/Controller?cmd=movie_list">영화</a>
 			</li>
 			<li>
-				<a href="/Gigabox/Controller?cmd=booking_select_movie">예매</a>
+				<a href="#" onclick="nav_page_move('Controller?cmd=booking_select_movie')">예매</a>
 			</li>
 			<li>
-				<a href="/Gigabox/Controller?cmd=review_main_page">리뷰</a>
+				<a href="#" onclick="nav_page_move('ReviewController?cmd=review_main_page')">리뷰</a>
 			</li>
 			<li>
-				<a href="/Gigabox/Controller?cmd=my_ticket_page">내 티켓</a>
+				<a href="#" onclick="nav_page_move('Controller?cmd=my_ticket_page')">내 티켓</a>
 			</li>
 		</ul>
 	</nav>
