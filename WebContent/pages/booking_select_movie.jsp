@@ -113,6 +113,11 @@
 		}
 	</style>
 	<script type="text/javascript">
+		if (${empty user.m_idx}) {
+			alert('예매하려면 로그인이 필요합니다.');
+			location.href='/Gigabox/Controller?cmd=login_page';
+		}
+		
 		var choose_movie = function(f) {
 			if (f.mv_idx.value == '') {
 				alert('예매하실 영화를 선택해주세요.');

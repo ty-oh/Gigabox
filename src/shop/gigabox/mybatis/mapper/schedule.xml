@@ -13,17 +13,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="select_schedule_by_date_idx" parameterType="shop.gigabox.vo.SCVO" resultType="shop.gigabox.vo.SCVO">
 		select *
 		from schedule
-		where mv_idx=#{mv_idx} and th_idx=#{th_idx} and screen_date=to_date(#{screen_date}, 'YYYY-MM-DD HH24:MI:SS')
+		where mv_idx=#{mv_idx} and
+			  th_idx=#{th_idx} and
+			  screen_date=to_date(#{screen_date}, 'YYYY-MM-DD HH24:MI:SS')
 	</select>
 	
-	<select id="select_schedule" parameterType="shop.gigabox.vo.SCVO">
+	<select id="select_schedule" parameterType="shop.gigabox.vo.SCVO" resultType="shop.gigabox.vo.SCVO">
 		select *
 		from schedule
 		where mv_idx=#{mv_idx} and 
 			  th_idx=#{th_idx} and
 			  th_row=#{th_row} and
 			  th_col=#{th_col} and
-			  screen_date=to_date(#{screen_date}, 'YYYY-MM-DD HH24:MI');
+			  screen_date=to_date(#{screen_date}, 'YYYY-MM-DD HH24:MI:SS')
 	</select>
 	
 	<insert id="insert_schedule" parameterType="shop.gigabox.vo.SCVO">
@@ -40,6 +42,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="update_schedule_booking" parameterType="int">
 		update schedule
 		set isbooked='isbooked'
-		where sc_idx=#{sc_idx}; 
+		where sc_idx=#{sc_idx}
 	</update>
 </mapper>
