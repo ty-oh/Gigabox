@@ -222,6 +222,16 @@
 			var header = document.getElementsByTagName('header')[0];
 			header.setAttribute('class', 'main-header');
 		}
+		
+		var booking = function(mv_idx) {
+			if (${empty user.m_idx}) {
+				alert('로그인이 필요한 서비스입니다.');
+				location.href = '/Gigabox/Controller?cmd=login_page';
+				return;
+			}
+			
+			location.href = '/Gigabox/Controller?cmd=booking_select_theater&mv_idx='+mv_idx;
+		}
 	</script>
 </head>
 <body>
@@ -255,7 +265,7 @@
 															<div class="btn-util">
 																<button type="button" class="button btn-like">♡</button>
 																<div>
-																	<a href="#" class="button gblue">예매</a>																
+																	<a href="#" class="button gblue" onclick="booking(${mvList.get(i).mv_idx})">예매</a>																
 																</div>
 															</div>
 														</li>

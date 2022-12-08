@@ -11,6 +11,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by r_reg_date desc
 	</select>
 
+	<select id="select_review_list_by_movie" parameterType="int" resultType="shop.gigabox.vo.RVO">
+		select *
+		from review
+		where mv_idx=#{mv_idx}
+		order by r_reg_date desc
+	</select>
+
 	<select id="select_review_by_idx" parameterType="int" resultType="shop.gigabox.vo.RVO">
 		select *
 		from review
@@ -22,6 +29,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from review
 		where m_idx=#{m_idx} and
 			  mv_idx=#{mv_idx}
+	</select>
+	
+	<select id="average_score_by_idx" parameterType="int" resultType="int">
+		select nvl(avg(r_score), 0)
+		from review
+		where mv_idx=#{mv_idx}
 	</select>
 	
 	<insert id="insert_review" parameterType="shop.gigabox.vo.RVO">

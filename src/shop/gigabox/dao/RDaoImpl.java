@@ -31,6 +31,11 @@ public class RDaoImpl implements RDao {
 	}
 	
 	@Override
+	public List<RVO> selectReviewListByMvIdx(int mv_idx) {
+		return getSqlSession().selectList("select_review_list_by_movie", mv_idx);
+	}
+	
+	@Override
 	public RVO selectReviewByIdx(int r_idx) {
 		return getSqlSession().selectOne("select_review_by_idx", r_idx);
 	}
@@ -38,6 +43,11 @@ public class RDaoImpl implements RDao {
 	@Override
 	public int selectCountReviewByIdx(RVO rvo) {
 		return getSqlSession().selectOne("count_review_by_idx", rvo);
+	}
+	
+	@Override
+	public int selectAvgReviewScoreByIdx(int mv_idx) {
+		return getSqlSession().selectOne("average_score_by_idx", mv_idx);
 	}
 	
 	@Override

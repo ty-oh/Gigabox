@@ -190,6 +190,17 @@
 		    padding: 0;
 		}
 	</style>
+	<script type="text/javascript">
+		var booking = function(mv_idx) {
+			if (${empty user.m_idx}) {
+				alert('로그인이 필요한 서비스입니다.');
+				location.href = '/Gigabox/Controller?cmd=login_page';
+				return;
+			}
+			
+			location.href = '/Gigabox/Controller?cmd=booking_select_theater&mv_idx='+mv_idx;
+		}
+	</script>
 </head>
 <body>
 	<div class="body-wrapper">
@@ -212,7 +223,9 @@
 										<li>
 											<div class="movie-info">
 												<p class="rank">1</p>
-												<img alt="" src="/movie_images/${mv.mv_image_main }">
+												<a href="Controller?cmd=movie_page&mv_idx=${mv.mv_idx }" class="movie-info">
+													<img alt="" src="/movie_images/${mv.mv_image_main }">
+												</a>
 											</div>
 											<div class="title">
 												<p>${mv.title }</p>
@@ -223,7 +236,7 @@
 											<div class="btn-util">
 												<button class="button btn-like">♡</button>
 												<div class="booking-btn">
-													<a href="#" class="button purple">예매</a>
+													<a href="#" class="button purple" onclick="booking(${mv.mv_idx})">예매</a>
 												</div>
 											</div>
 										</li>

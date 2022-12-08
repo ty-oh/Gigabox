@@ -15,6 +15,11 @@ public class RServiceImpl implements RService {
 	}
 	
 	@Override
+	public List<RVO> getReviewListByMovie(int mv_idx) {
+		return rdao.selectReviewListByMvIdx(mv_idx);
+	}
+	
+	@Override
 	public RVO getReviewByIdx(int r_idx) {
 		return rdao.selectReviewByIdx(r_idx);
 	}
@@ -22,6 +27,11 @@ public class RServiceImpl implements RService {
 	@Override
 	public int checkReview(RVO rvo) {
 		return rdao.selectCountReviewByIdx(rvo);
+	}
+	
+	@Override
+	public int getReviewScoreAvg(int mv_idx) {
+		return rdao.selectAvgReviewScoreByIdx(mv_idx);
 	}
 	
 	@Override
