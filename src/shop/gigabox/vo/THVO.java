@@ -1,8 +1,8 @@
 package shop.gigabox.vo;
 
 public class THVO {
-	int th_idx;
-	String th_name;
+	private int th_idx;
+	private String th_name;
 	
 	public THVO() {}
 	public THVO(int th_idx, String th_name) {

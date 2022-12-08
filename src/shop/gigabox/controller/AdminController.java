@@ -123,6 +123,7 @@ public class AdminController extends HttpServlet {
 		case "insert_theater":
 			String th_name= request.getParameter("th_name"); 
 			String[] seat = request.getParameterValues("seat");
+			int price = Integer.parseInt(request.getParameter("price"));
 			
 			thvo = new THVO();
 			thvo.setTh_name(th_name);
@@ -138,6 +139,7 @@ public class AdminController extends HttpServlet {
 				seatvo.setTh_idx(thvo.getTh_idx());
 				seatvo.setTh_row(rowcol[0]);
 				seatvo.setTh_col(Integer.parseInt(rowcol[1]));
+				seatvo.setPrice(price);
 				seatservice.insert(seatvo);
 			}
 			

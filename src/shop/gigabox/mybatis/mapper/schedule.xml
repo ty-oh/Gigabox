@@ -43,13 +43,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				#{th_idx},
 				#{th_row},
 				#{th_col},
-				#{mv_idx}
+				#{mv_idx},
+				''
 		)
 	</insert>
 	
 	<update id="update_schedule_booking" parameterType="int">
 		update schedule
 		set isbooked='isbooked'
+		where sc_idx=#{sc_idx}
+	</update>
+	
+	<update id="update_schedule_unbooking">
+		update schedule
+		set isbooked=''
 		where sc_idx=#{sc_idx}
 	</update>
 </mapper>

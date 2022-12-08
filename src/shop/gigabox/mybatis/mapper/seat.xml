@@ -14,7 +14,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into seat
 		values( #{th_idx},
 				#{th_row},
-				#{th_col}
+				#{th_col},
+				#{price}
 		)
 	</insert>
 </mapper>

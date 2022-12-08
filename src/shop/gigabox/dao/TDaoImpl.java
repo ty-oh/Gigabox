@@ -38,4 +38,13 @@ public class TDaoImpl implements TDao {
 		}
 		return result;
 	}
+	
+	@Override
+	public int deleteTicket(int sc_idx) {
+		int result = getSqlSession().delete("delete_ticket", sc_idx);
+		if (result > 0) {
+			getSqlSession().commit();
+		}
+		return result;
+	}
 }

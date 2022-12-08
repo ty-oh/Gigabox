@@ -61,6 +61,15 @@ public class SCDaoImpl implements SCDao{
 		if (result > 0) {
 			getSqlSession().commit();
 		}
-		return 0;
+		return result;
+	}
+	
+	@Override
+	public int updateScheduleUnbooking(int sc_idx) {
+		int result = getSqlSession().update("update_schedule_unbooking", sc_idx);
+		if (result > 0) {
+			getSqlSession().commit();
+		}
+		return result;
 	}
 }

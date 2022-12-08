@@ -140,6 +140,10 @@
 										<span>*필수</span>
 									</div>
 									<div>
+										<input type="text" name="price" placeholder="좌석 가격"/>
+										<span>*필수</span>
+									</div>
+									<div>
 										<%
 											char[] rows = new char[15];
 											char a = 'A';

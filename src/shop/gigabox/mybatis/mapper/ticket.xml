@@ -10,4 +10,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where m_idx=#{m_idx}
 		order by t_idx
 	</select>
+	
+	<insert id="insert_ticket" parameterType="shop.gigabox.vo.TVO">
+		insert into ticket
+		values (t_seq.nextval,
+				#{sc_idx},
+				#{m_idx}
+		)
+	</insert>
+	
+	<delete id="delete_ticket" parameterType="int">
+		delete from ticket
+		where sc_idx=#{sc_idx}
+	</delete>
 </mapper>

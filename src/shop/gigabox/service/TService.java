@@ -7,4 +7,5 @@ import shop.gigabox.vo.TVO;
 public interface TService {
 	public List<TVO> getTicketListByIdx(int m_idx);
 	public int confirmBooking(TVO tvo);
+	public int cancelTicket(int sc_idx);
 }

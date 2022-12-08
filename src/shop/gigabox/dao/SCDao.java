@@ -12,4 +12,5 @@ public interface SCDao {
 	public SCVO selectScheduleByIdx(int sc_idx);
 	public int insertSchedule(SCVO scvo);
 	public int updateScheduleBooking(int sc_idx);
+	public int updateScheduleUnbooking(int sc_idx);
 }
