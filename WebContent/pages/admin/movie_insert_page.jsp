@@ -154,7 +154,7 @@
 						</div>
 						<div class="detail">
 							<div class="inner-wrapper">
-								<form method="post">
+								<form method="post" enctype="multipart/form-data">
 									<div>
 										<input type="text" name="title" placeholder="영화 제목을 입력해주세요.">
 										<span>*필수</span>
@@ -184,6 +184,7 @@
 				</div>
 			</div>
 		</div>
+		<jsp:include page="/pages/modules/footer.jsp" />
 	</div>
 </body>
 </html>

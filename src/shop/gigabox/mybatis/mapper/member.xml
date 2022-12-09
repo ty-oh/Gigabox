@@ -16,6 +16,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where m_idx=#{m_idx}
 	</select>
 	
+	<select id="select_count_by_id" parameterType="String" resultType="int">
+		select count(*)
+		from member
+		where m_id=#{m_id}
+	</select>
+	
 	<insert id="insert_member" parameterType="shop.gigabox.vo.MVO">
 		insert into member 
 		values (m_seq.nextval,

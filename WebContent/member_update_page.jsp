@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,38 +64,37 @@
 		.contents {
 			width: 100%;
 			margin: 0;
-			padding: 80px 0 0 0;
+			padding: 200px 0 0 0;
 		}
 		.inner-wrapper {
 			width: 1100px;
 			margin: 0 auto;
 		}
-		.form-box {
-			width: 500px;
+		.login-box {
+			width: 600px;
 			margin: 0 auto;
 			border: 1px solid #503396; 
 		}
-		.form-box .title {
+		.login-box .title {
 			width: 100%;
 			height: 40px;
 			line-height: 40px;
 			background-color: #503396;
 			padding-left: 30px;
 		}
-		.form-box .title span {
+		.login-box .title span {
 			font-size: 20px;
 			font-weight: bold;
 			color: white;
 		}
-		.form-box .detail .inner-wrapper {
+		.login-box .detail .inner-wrapper {
 			width: 100%;
 			padding: 10px 0 10px 30px;
 		}
-		.form-box .detail .inner-wrapper div {
+		.login-box .detail .inner-wrapper div {
 			margin: 10px 0;
 		}
-		.form-box .detail .inner-wrapper div input,
-		.form-box .detail .inner-wrapper div select {
+		.login-box .detail .inner-wrapper div input {
 			display: inline-block;
 			width: 300px;
 			height: 46px;
@@ -105,23 +103,61 @@
 			border: 1px solid gray;
 			padding-left: 20px;
 		}
-		.form-box .detail .inner-wrapper div input[type="button"]{
-			padding-left: 0px;
+		.login-box .detail .inner-wrapper div input[name="id"].not-valid:focus {
+			border: 2px solid red;
+			background-color: pink;
 		}
 	</style>
+	<script src="../js/jquery-3.4.1.js"></script>
 	<script type="text/javascript">
-		var insert_schedule = function(f) {
-			if (f.sc_date.value == '') {
-				alert('상영 날짜를 선택해주세요.');
+		var isPwValid = false;
+		
+		var update_member = function(f) {
+			if (!isPwValid) {
+				alert('비밀번호가 틀립니다.');
 				return;
 			}
-			if (f.sc_time.value == '') {
-				alert('상영 날짜를 선택해주세요.');
+			if (f.name.value == '') {
+				alert('이름을 입력해주세요.');
 				return;
 			}
 			
-			f.action='/Gigabox/AdminController'
+			f.action='/Gigabox/Controller';
 			f.submit();
+		}
+		var checkPw = function(pw) {
+			$.ajax({
+				type:'get',
+				url: '/Gigabox/AjaxController',
+				data: {
+					id_value:id.value,
+					cmd:'pw_check',
+				},
+				success: function(data) {
+					changeInputCss(pw, data);
+				},
+				error: function(data) {
+					console.log('error');
+				}
+			});
+		}
+		
+		var changeInputCss = function(pw, data) {
+			var msg = pw.nextSibling.nextSibling;
+			
+			if(pw.value.length < 4) {
+				msg.innerText = '*필수, 4글자 이상 입력하세요.';
+				msg.setAttribute('style', 'color:red');
+				pw.setAttribute('style', 'border: 2px solid red; background-color:pink');
+				pw.setAttribute('class', 'not-valid');
+				isPwValid = false;
+			} else  {
+				msg.innerText = '유효한 비밀번호 입니다.';
+				msg.setAttribute('style', 'color:blue');
+				pw.setAttribute('style', 'border: 2px solid skyblue; background-color:skyblue');
+				pw.setAttribute('class', 'not-valid');
+				isPwValid = true;
+			} 			
 		}
 	</script>
 </head>
@@ -131,40 +167,35 @@
 		<div class="main-container">
 			<div class="contents">
 				<div class="inner-wrapper">
-					<div class="form-box">
+					<div class="login-box">
 						<div class="title">
-							<span>상영일정 등록 &lt;관리자 전용&gt;</span>
+							<span>회원 정보 수정</span>
 						</div>
 						<div class="detail">
 							<div class="inner-wrapper">
 								<form method="post">
 									<div>
-										<input type="date" name="sc_date"/>
+										<input type="text" name="id" placeholder="아이디" readonly="readonly"/>
+									</div>
+									<div>
+										<input type="password" name="pw" placeholder="비밀번호" onkeyup="checkPw(this)"/>
+										<span></span>
+									</div>
+									<div>
+										<input type="text" name="name" placeholder="이름"/>
 										<span>*필수</span>
 									</div>
 									<div>
-										<input type="time" name="sc_time"/>
-										<span>*필수</span>
+										<input type="tel" name="phone" placeholder="전화번호"/>
+										<span>*필수</span>									
 									</div>
 									<div>
-										<select name="th_idx">
-											<option value="0">:: 상영관 선택 ::</option>
-											<c:forEach var="th" items="${thList }">
-												<option value="${th.th_idx }">${th.th_name }</option>
-											</c:forEach>
-										</select>
+										<input type="email" name="email" placeholder="이메일"/>
+										<span></span>
 									</div>
 									<div>
-										<select name="mv_idx">
-											<option value="0">:: 영화 선택 ::</option>
-											<c:forEach var="mv" items="${mvList }">
-												<option value="${mv.mv_idx }">${mv.title }</option>
-											</c:forEach>
-										</select>
-									</div>
-									<div>
-										<input type="hidden" name="cmd" value="insert_schedule" />
-										<input type="button" value="상영 일정 등록" onclick="insert_schedule(this.form)" />
+										<input type="hidden" name="cmd" value="update_member">
+										<input type="button" value="정보수정" onclick="update_member(this.form)" />
 									</div>
 								</form>
 							</div>

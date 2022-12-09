@@ -43,9 +43,18 @@ public class AdminController extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		
 		String realPath = request.getServletContext().getRealPath("/upload/movie/images");
-		
 		MultipartRequest mr = null;
 		String cmd = request.getParameter("cmd");
+		if (cmd == null) {
+			mr = new MultipartRequest(
+					request,
+					realPath,
+					1024*1024*10,
+					"utf-8",
+					new DefaultFileRenamePolicy());
+			cmd = mr.getParameter("cmd");
+		}
+		
 		int result;
 		MVVO mvvo = null;
 		MVService mvservice = new MVServiceImpl();
@@ -59,15 +68,7 @@ public class AdminController extends HttpServlet {
 		SCVO scvo = null;
 		SCService scservice = new SCServiceImpl();
 		
-		if (cmd == null) {
-			mr = new MultipartRequest(
-					request,
-					realPath,
-					1024*1024*10,
-					"utf-8",
-					new DefaultFileRenamePolicy());
-			cmd = mr.getParameter("cmd");
-		}
+
 		
 		boolean forwardCheck = false;
 		String path = "";
@@ -117,7 +118,7 @@ public class AdminController extends HttpServlet {
 			}
 			
 			mvservice.insert(mvvo);
-			path = "pages/main.jsp";
+			path = "/Gigabox/Controller?cmd=main_page";
 			break;
 			
 		case "insert_theater":

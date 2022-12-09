@@ -165,6 +165,7 @@
 				</div>
 			</div>
 		</div>
+		<jsp:include page="/pages/modules/footer.jsp" />
 	</div>
 </body>
 </html>

@@ -200,7 +200,8 @@
 			margin: 0;
 			padding: 0 5px;
 			color: #fff;
-			font-size : 20px;
+			font-size: 20px;
+			font-weight: bold;
 			border-color: #555;
 			background-color: rgba(0, 0, 0, 0.4);
 		}
@@ -212,11 +213,13 @@
 			padding: 0;
 			border-radius: 4px;
 			color: #fff;
+			font-weight: bold;
 			line-height: 36px;
 			border: 0;
 			background: #037b94;
 		}
 	</style>
+	<script src="./js/jquery-3.4.1.js"></script>
 	<script type="text/javascript">
 		onload = function() {
 			var header = document.getElementsByTagName('header')[0];
@@ -231,6 +234,32 @@
 			}
 			
 			location.href = '/Gigabox/Controller?cmd=booking_select_theater&mv_idx='+mv_idx;
+		}
+		
+		var favorite = function(target, m_idx, mv_idx) {
+			if(m_idx == '') {
+				alert('로그인이 필요합니다.');
+				location.href = '/Gigabox/Controller?cmd=login_page';
+				return;
+			}
+			
+			$.ajax({
+				type:'get',
+				url:'/Gigabox/AjaxController',
+				data:{
+					m_idx:m_idx,
+					mv_idx:mv_idx,
+					cmd:'click_favorite'
+				},
+				success: function(data) {
+					var fav = JSON.parse(data);
+					target.childNodes[1].innerText = fav.isClicked? '♡' : '♥';
+					target.childNodes[3].innerText = fav.fCnt;
+				},
+				error: function(data) {
+					console.log('error');
+				}
+			});
 		}
 	</script>
 </head>
@@ -257,13 +286,16 @@
 											<c:forEach var="i" begin="0" end="3" step="1">
 												<c:choose>
 													<c:when test="${mvList.size() gt i }">
-														<li>
+														<li id="mv${mvList.get(i).mv_idx }">
 															<p>${i + 1 }</p>
 															<a href="Controller?cmd=movie_page&mv_idx=${mvList.get(i).mv_idx }" class="movie-info">
 																<img alt="영화 포스터" src="/movie_images/${mvList.get(i).mv_image_main }" />
 															</a>
 															<div class="btn-util">
-																<button type="button" class="button btn-like">♡</button>
+																<button type="button" class="button btn-like" onclick="favorite(this, ${not empty user? user.m_idx: '0' }, ${mvList.get(i).mv_idx })">
+																	<span id="favoriteHeart">${fClickedList.get(i) ? '♥': '♡' }</span>
+																	<span id="favoriteCount" class="favorite-count">${fCntList.get(i) }</span>
+																</button>
 																<div>
 																	<a href="#" class="button gblue" onclick="booking(${mvList.get(i).mv_idx})">예매</a>																
 																</div>
@@ -290,6 +322,7 @@
 				</div>
 			</div>
 		</div>
+		<jsp:include page="/pages/modules/footer.jsp" />
 	</div>
 </body>
 </html>

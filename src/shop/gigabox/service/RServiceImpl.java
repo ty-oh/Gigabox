@@ -30,7 +30,7 @@ public class RServiceImpl implements RService {
 	}
 	
 	@Override
-	public int getReviewScoreAvg(int mv_idx) {
+	public double getReviewScoreAvg(int mv_idx) {
 		return rdao.selectAvgReviewScoreByIdx(mv_idx);
 	}
 	

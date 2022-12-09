@@ -97,6 +97,7 @@
 		}
 		.form-box .detail .inner-wrapper div input,
 		.form-box .detail .inner-wrapper div select {
+			margin: 0 0 5px 0;
 			display: inline-block;
 			width: 300px;
 			height: 46px;
@@ -110,6 +111,9 @@
 		}
 		.form-box .detail .inner-wrapper div input[type="button"]{
 			padding-left: 0px;
+		}
+		.form-box .detail .inner-wrapper div input[readonly="readonly"] {
+			background-color: #ddd;
 		}
 	</style>
 	<script type="text/javascript">
@@ -140,7 +144,6 @@
 									<div>
 										<input type="text" value="${mv.title }" readonly="readonly"/>
 										<select name="th_idx" size="10">
-											<option value="0">:: 상영 중인 상영관 ::</option>
 											<c:forEach var="th" items="${thList }">
 												<option value="${th.th_idx }">${th.th_name }</option>
 											</c:forEach>
@@ -157,6 +160,7 @@
 				</div>
 			</div>
 		</div>
+		<jsp:include page="/pages/modules/footer.jsp" />
 	</div>
 </body>
 </html>

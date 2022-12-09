@@ -46,7 +46,7 @@ public class RDaoImpl implements RDao {
 	}
 	
 	@Override
-	public int selectAvgReviewScoreByIdx(int mv_idx) {
+	public double selectAvgReviewScoreByIdx(int mv_idx) {
 		return getSqlSession().selectOne("average_score_by_idx", mv_idx);
 	}
 	
