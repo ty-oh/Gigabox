@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import shop.gigabox.service.FService;
+import shop.gigabox.service.FServiceImpl;
 import shop.gigabox.service.MService;
 import shop.gigabox.service.MServiceImpl;
 import shop.gigabox.service.MVService;
@@ -25,6 +27,7 @@ import shop.gigabox.service.THService;
 import shop.gigabox.service.THServiceImpl;
 import shop.gigabox.service.TService;
 import shop.gigabox.service.TServiceImpl;
+import shop.gigabox.vo.FVO;
 import shop.gigabox.vo.MVO;
 import shop.gigabox.vo.MVVO;
 import shop.gigabox.vo.RVO;
@@ -83,6 +86,10 @@ public class Controller extends HttpServlet {
 		List<RVO> rList = null;
 		RVO rvo = null;
 		
+		FService fservice = new FServiceImpl();
+		List<FVO> fList = null;
+		FVO fvo = null;
+		
 		switch (cmd) {
 		case "login_page":
 			path="pages/login_page.jsp";
@@ -94,17 +101,46 @@ public class Controller extends HttpServlet {
 			
 		case "main_page":
 			mvList = mvservice.getRecentListFour();
+			List<Integer> fCntList = new ArrayList<Integer>();
+			List<Boolean> fClickedList = new ArrayList<Boolean>();
+			fvo = new FVO();
+			fvo.setM_idx( session.getAttribute("user") != null
+						  ? ((MVO)session.getAttribute("user")).getM_idx()
+						  : 0
+						);
 			
+			for (MVVO mv : mvList) {
+				mv_idx = mv.getMv_idx();
+				fvo.setMv_idx(mv_idx);
+				
+				fCntList.add(fservice.countFavorite(mv_idx));
+				fClickedList.add(fservice.checkIsClicked(fvo) == 1);
+			}
+			
+			request.setAttribute("fClickedList", fClickedList);
+			request.setAttribute("fCntList", fCntList);
 			request.setAttribute("mvList", mvList);
 			forwardCheck = true;
 			path="pages/main.jsp";
 			break;
 
+			
+		//영화 상세 페이지
 		case "movie_page":
+			//영화 정보 불러오기
 			mv_idx = Integer.parseInt(request.getParameter("mv_idx"));
 			mvvo = mvservice.getMovieInfo(mv_idx);
-			int rScoreAvg = rservice.getReviewScoreAvg(mv_idx);
+			double rScoreAvg = rservice.getReviewScoreAvg(mv_idx);
+			int fCnt = fservice.countFavorite(mv_idx);
+			fvo = new FVO();
+			fvo.setMv_idx(mv_idx);
+			fvo.setM_idx( session.getAttribute("user") != null
+					  ? ((MVO)session.getAttribute("user")).getM_idx()
+					  : 0
+					);
+			boolean fClicked = fservice.checkIsClicked(fvo) == 1;
 			
+			//리뷰 불러오기
 			rList = rservice.getReviewListByMovie(mv_idx);
 			mList = new ArrayList<MVO>();
 			for (RVO r : rList) {
@@ -112,6 +148,9 @@ public class Controller extends HttpServlet {
 				mList.add(mvo);
 			}
 			
+			
+			request.setAttribute("fClicked", fClicked);
+			request.setAttribute("fCnt", fCnt);
 			request.setAttribute("mList", mList);
 			request.setAttribute("rList", rList);
 			request.setAttribute("rScoreAvg", rScoreAvg);
@@ -119,6 +158,33 @@ public class Controller extends HttpServlet {
 			forwardCheck = true;
 			path="pages/movie_page.jsp";
 			break;
+		
+		case "movie_list":
+			mvList = mvservice.getMovieList();
+			
+			fvo = new FVO();
+			fvo.setM_idx( session.getAttribute("user") != null
+						  ? ((MVO)session.getAttribute("user")).getM_idx()
+						  : 0
+						);
+			
+			fCntList = new ArrayList<Integer>();
+			fClickedList = new ArrayList<Boolean>();
+			for (MVVO mv : mvList) {
+				mv_idx = mv.getMv_idx();
+				
+				fvo.setMv_idx(mv_idx);
+				fCntList.add(fservice.countFavorite(mv_idx));
+				fClickedList.add(fservice.checkIsClicked(fvo) == 1);
+			}
+			
+			request.setAttribute("fClickedList", fClickedList);
+			request.setAttribute("fCntList", fCntList);
+			request.setAttribute("mvList", mvList);
+			forwardCheck = true;
+			path="pages/movie_list.jsp";
+			break;
+		
 		
 		case "booking_select_movie":
 			mvList = mvservice.getScreeningMV();
@@ -244,15 +310,7 @@ public class Controller extends HttpServlet {
 			
 			path="/Gigabox/Controller?cmd=my_ticket_page";
 			break;
-			
-		case "movie_list":
-			mvList = mvservice.getMovieList();
-			request.setAttribute("mvList", mvList);
-			
-			forwardCheck = true;
-			path="pages/movie_list.jsp";
-			break;
-		
+
 		case "my_ticket_page":
 			m_idx = ((MVO)session.getAttribute("user")).getM_idx();
 			

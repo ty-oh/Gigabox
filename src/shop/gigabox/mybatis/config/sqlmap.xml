@@ -18,13 +18,14 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</environments>
 	
 	<mappers>
+        <mapper resource="shop/gigabox/mybatis/mapper/favorite.xml"/>
         <mapper resource="shop/gigabox/mybatis/mapper/movie.xml"/>
         <mapper resource="shop/gigabox/mybatis/mapper/member.xml"/>
-        <mapper resource="shop/gigabox/mybatis/mapper/theater.xml"/>
+        <mapper resource="shop/gigabox/mybatis/mapper/review.xml"/>
         <mapper resource="shop/gigabox/mybatis/mapper/seat.xml"/>
         <mapper resource="shop/gigabox/mybatis/mapper/schedule.xml"/>
+        <mapper resource="shop/gigabox/mybatis/mapper/theater.xml"/>
         <mapper resource="shop/gigabox/mybatis/mapper/ticket.xml"/>
-        <mapper resource="shop/gigabox/mybatis/mapper/review.xml"/>
 	</mappers>
 	
 </configuration>

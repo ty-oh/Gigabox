@@ -246,10 +246,11 @@
 		}
 		.inner-wrapper .review-list ol>li .is-empty {
 			height: 100%;
-			padding-top: 10%;
+			padding-top: 1%;
 			text-align: center;
 		}
 	</style>
+	<script src="./js/jquery-3.4.1.js"></script>
 	<script type="text/javascript">
 		var booking = function(mv_idx) {
 			if (${empty user.m_idx}) {
@@ -261,7 +262,36 @@
 			location.href = '/Gigabox/Controller?cmd=booking_select_theater&mv_idx='+mv_idx;
 		}
 		var delete_review = function(r_idx) {
+			if(!confirm('리뷰를 삭제하시겠습니까?')) {
+				return;
+			}
 			
+			location.href = '/Gigabox/ReviewController?cmd=delete_review&r_idx='+r_idx;
+		}
+		var favorite = function(target, m_idx, mv_idx) {
+			if(m_idx == '') {
+				alert('로그인이 필요합니다.');
+				location.href = '/Gigabox/Controller?cmd=login_page';
+				return;
+			}
+			
+			$.ajax({
+				type:'get',
+				url:'/Gigabox/AjaxController',
+				data:{
+					m_idx:m_idx,
+					mv_idx:mv_idx,
+					cmd:'click_favorite'
+				},
+				success: function(data) {
+					var fav = JSON.parse(data);
+					target.childNodes[1].innerText = fav.isClicked? '♡' : '♥';
+					target.childNodes[3].innerText = fav.fCnt;
+				},
+				error: function(data) {
+					console.log('error');
+				}
+			});
 		}
 	</script>
 </head>
@@ -275,7 +305,11 @@
 						<div class="title">${mvvo.title }</div>
 						<div class="title-eng">${mvvo.title_eng }</div>
 						<div class="btn-util">
-							<button class="button btn-like">♡</button>
+							<!-- <button class="button btn-like">♡</button> -->
+							<button type="button" class="button btn-like" onclick="favorite(this, ${not empty user? user.m_idx: '0' }, ${mvvo.mv_idx })">
+								<span id="favoriteHeart">${fClicked ? '♥': '♡' }</span>
+								<span id="favoriteCount" class="favorite-count">${fCnt }</span>
+							</button>
 						</div>
 						<div class="info">
 							<div class="summary">
@@ -341,7 +375,7 @@
 					</div>
 				</div>
 			</div>
-		</div>		
+		</div>
 	</div>
 </body>
 </html>

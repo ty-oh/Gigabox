@@ -6,4 +6,5 @@ public interface MService {
 	public MVO login(MVO mvo);
 	public MVO getMemberByIdx(int m_idx);
 	public int joinMember(MVO mvo);
+	public boolean checkIdSame(String id_value);
 }

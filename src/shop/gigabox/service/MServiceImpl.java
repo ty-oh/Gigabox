@@ -21,4 +21,9 @@ public class MServiceImpl implements MService {
 	public int joinMember(MVO mvo) {
 		return mdao.insertMember(mvo);
 	}
+	
+	@Override
+	public boolean checkIdSame(String id_value) {
+		return mdao.selectCountById(id_value) == 1;
+	}
 }

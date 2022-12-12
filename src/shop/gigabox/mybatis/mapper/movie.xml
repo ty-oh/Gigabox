@@ -28,8 +28,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="select_movie_list_in_schedule" resultType="shop.gigabox.vo.MVVO">
 		select *
 		from movie
-		where mv_idx=(select distinct mv_idx
-              		  from schedule)
+		where mv_idx In(select distinct mv_idx
+              		  	from schedule)
 	</select>
 	
 	<insert id="insert_mv" parameterType="shop.gigabox.vo.MVVO">

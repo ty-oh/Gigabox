@@ -97,6 +97,7 @@
 		}
 		.form-box .detail .inner-wrapper div input,
 		.form-box .detail .inner-wrapper div select {
+			margin: 0 0 5px 0;
 			display: inline-block;
 			width: 300px;
 			height: 46px;
@@ -144,7 +145,6 @@
 								<form method="post">
 									<div>
 										<select name="mv_idx" size="10">
-											<option value="0">:: 상영 중인 영화 ::</option>
 											<c:forEach var="mv" items="${mvList }">
 												<option value="${mv.mv_idx }">${mv.title }</option>
 											</c:forEach>
@@ -161,6 +161,7 @@
 				</div>
 			</div>
 		</div>
+		<jsp:include page="/pages/modules/footer.jsp" />
 	</div>
 </body>
 </html>

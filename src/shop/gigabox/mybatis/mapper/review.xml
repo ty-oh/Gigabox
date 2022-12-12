@@ -31,8 +31,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			  mv_idx=#{mv_idx}
 	</select>
 	
-	<select id="average_score_by_idx" parameterType="int" resultType="int">
-		select nvl(avg(r_score), 0)
+	<select id="average_score_by_idx" parameterType="int" resultType="double">
+		select round(nvl(avg(r_score), 0), 1)
 		from review
 		where mv_idx=#{mv_idx}
 	</select>

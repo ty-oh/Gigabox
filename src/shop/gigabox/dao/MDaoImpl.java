@@ -34,6 +34,11 @@ public class MDaoImpl implements MDao{
 	}
 	
 	@Override
+	public int selectCountById(String id_value) {
+		return getSqlSession().selectOne("select_count_by_id", id_value);
+	}
+	
+	@Override
 	public int insertMember(MVO mvo) {
 		int result = getSqlSession().insert("insert_member", mvo);
 		if (result > 0) {

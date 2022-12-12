@@ -103,18 +103,28 @@
 			border: 1px solid gray;
 			padding-left: 20px;
 		}
+		.login-box .detail .inner-wrapper div input[name="id"].not-valid:focus {
+			border: 2px solid red;
+			background-color: pink;
+		}
 	</style>
+	<script src="../js/jquery-3.4.1.js"></script>
 	<script type="text/javascript">
+		var isIdValid = false;
+		var isPwValid = false;
+		var isPwChecked = false;
+		var isDuplicate = false;
+		
 		var join = function(f) {
-			if (f.id.value == '') {
-				alert('아이디를 입력해주세요.');
+			if (!isIdValid) {
+				alert('아이디가 유효하지 않습니다.');
 				return;
 			}
-			if (f.pw.value == '') {
-				alert('비밀번호를 입력해주세요.');
+			if (!isPwValid) {
+				alert('비밀번호가 유효하지 않습니다.');
 				return;
 			}
-			if (f.pw.value != f.pwCheck.value) {
+			if (!isPwChecked) {
 				alert('비밀번호 확인이 같지 않습니다.');
 				return;
 			}
@@ -130,6 +140,87 @@
 			f.action='/Gigabox/Controller';
 			f.submit();
 		}
+		var checkId = function(id) {
+			$.ajax({
+				type:'get',
+				url: '/Gigabox/AjaxController',
+				data: {
+					id_value:id.value,
+					cmd:'id_duplicate_check',
+				},
+				success: function(data) {
+					console.log(data);
+					changeInputCss(id, data);
+				},
+				error: function(data) {
+					console.log('error');
+				}
+			});
+		}
+		
+		var changeInputCss = function(id, data) {
+			var msg = id.nextSibling.nextSibling;
+			var isDuplicate = data;
+			
+			if(id.value.length < 3) {
+				msg.innerText = '*필수, 3글자 이상 입력하세요.';
+				msg.setAttribute('style', 'color:red');
+				id.setAttribute('style', 'border: 2px solid red; background-color:pink');
+				id.setAttribute('class', 'not-valid');
+				isIdValid = false;
+			} else if (isDuplicate == 'true') {
+				console.log(isDuplicate);
+				msg.innerText = '중복된 아이디가 있습니다.';
+				msg.setAttribute('style', 'color:red');
+				id.setAttribute('style', 'border: 2px solid red; background-color:pink');
+				id.setAttribute('class', 'not-valid');
+				isIdValid = false;
+			} else {
+				msg.innerText = '유효한 아이디 입니다.';
+				msg.setAttribute('style', 'color:blue');
+				id.setAttribute('style', 'border: 2px solid skyblue; background-color:skyblue');
+				id.setAttribute('class', 'not-valid');
+				isIdValid = true;
+			} 
+		}
+		
+		var checkPw = function(pw) {
+			var msg = pw.nextSibling.nextSibling;
+			
+			if(pw.value.length < 4) {
+				msg.innerText = '*필수, 4글자 이상 입력하세요.';
+				msg.setAttribute('style', 'color:red');
+				pw.setAttribute('style', 'border: 2px solid red; background-color:pink');
+				pw.setAttribute('class', 'not-valid');
+				isPwValid = false;
+			} else  {
+				msg.innerText = '유효한 비밀번호 입니다.';
+				msg.setAttribute('style', 'color:blue');
+				pw.setAttribute('style', 'border: 2px solid skyblue; background-color:skyblue');
+				pw.setAttribute('class', 'not-valid');
+				isPwValid = true;
+			} 			
+		}
+		
+		var checkPwSame = function(pwCheck) {
+			var pw = pwCheck.parentNode.previousSibling.previousSibling.childNodes[1];
+			var msg = pwCheck.nextSibling.nextSibling;
+			
+			console.log(pw);
+			if(pw.value != pwCheck.value) {
+				msg.innerText = '비밀번호가 같지 않습니다.';
+				msg.setAttribute('style', 'color:red');
+				pwCheck.setAttribute('style', 'border: 2px solid red; background-color:pink');
+				pwCheck.setAttribute('class', 'not-valid');
+				isPwChecked = false;
+			} else  {
+				msg.innerText = '확인 완료.';
+				msg.setAttribute('style', 'color:blue');
+				pwCheck.setAttribute('style', 'border: 2px solid skyblue; background-color:skyblue');
+				pwCheck.setAttribute('class', 'not-valid');
+				isPwChecked = true;
+			} 
+		} 
 	</script>
 </head>
 <body>
@@ -146,15 +237,15 @@
 							<div class="inner-wrapper">
 								<form method="post">
 									<div>
-										<input type="text" name="id" placeholder="아이디"/>
-										<span>*필수</span>
+										<input type="text" name="id" placeholder="아이디" onkeyup="checkId(this)"/>
+										<span>*필수, 3글자 이상</span>
 									</div>
 									<div>
-										<input type="password" name="pw" placeholder="비밀번호"/>
-										<span>*필수</span>
+										<input type="password" name="pw" placeholder="비밀번호" onkeyup="checkPw(this)"/>
+										<span>*필수, 4글자 이상</span>
 									</div>
 									<div>
-										<input type="password" name="pwCheck" placeholder="비밀번호확인"/>
+										<input type="password" name="pwCheck" placeholder="비밀번호확인" onkeyup="checkPwSame(this)"/>
 										<span></span>
 									</div>
 									<div>
@@ -180,6 +271,7 @@
 				</div>
 			</div>
 		</div>
+		<jsp:include page="/pages/modules/footer.jsp" />
 	</div>
 </body>
 </html>
