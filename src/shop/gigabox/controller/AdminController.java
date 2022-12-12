@@ -72,7 +72,7 @@ public class AdminController extends HttpServlet {
 		
 		boolean forwardCheck = false;
 		String path = "";
-		
+	
 		switch (cmd) {
 		case "movie_insert_page":
 			path="pages/admin/movie_insert_page.jsp";
